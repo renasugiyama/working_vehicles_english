@@ -81,3 +81,6 @@
     RailsのActiveRecordを使用して、ユーザーごとのクイズ履歴をデータベースに保存。    
 4. **不正解時のヒント表示機能**   
     質問モデルにヒント属性を追加し、不正解時に表示するヒントを用意。
+
+## ■ 画面遷移図
+https://www.figma.com/design/icP6EbImaJuUNCuKAFjRzM/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=5PBohVm8u2IrjNMN-1
