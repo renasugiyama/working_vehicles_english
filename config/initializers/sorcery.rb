@@ -4,7 +4,7 @@
 # Available submodules are: :user_activation, :http_basic_auth, :remember_me,
 # :reset_password, :session_timeout, :brute_force_protection, :activity_logging,
 # :magic_login, :external
-Rails.application.config.sorcery.submodules = []
+Rails.application.config.sorcery.submodules = [:remember_me, :reset_password]
 
 # Here you can configure each submodule's features.
 Rails.application.config.sorcery.configure do |config|
@@ -247,7 +247,7 @@ Rails.application.config.sorcery.configure do |config|
     # Specify username attributes, for example: [:username, :email].
     # Default: `[:email]`
     #
-    # user.username_attribute_names =
+    user.username_attribute_names = [:email]
 
     # Change *virtual* password attribute, the one which is used until an encrypted one is generated.
     # Default: `:password`
@@ -277,7 +277,7 @@ Rails.application.config.sorcery.configure do |config|
     # Change default salt attribute.
     # Default: `:salt`
     #
-    # user.salt_attribute_name = :salt
+    user.salt_attribute_name = :salt
 
     # How many times to apply encryption to the password.
     # Default: 1 in test env, `nil` otherwise
@@ -298,7 +298,7 @@ Rails.application.config.sorcery.configure do |config|
     # Encryption algorithm name. See 'encryption_algorithm=' for available options.
     # Default: `:bcrypt`
     #
-    user.encryption_algorithm = :bcrypt
+    # user.encryption_algorithm = :bcrypt
 
     # Make this configuration inheritable for subclasses. Useful for ActiveRecord's STI.
     # Default: `false`
@@ -309,12 +309,12 @@ Rails.application.config.sorcery.configure do |config|
     # change default remember_me_token attribute.
     # Default: `:remember_me_token`
     #
-    # user.remember_me_token_attribute_name =
+    user.remember_me_token_attribute_name = :remember_me_token
 
     # change default remember_me_token_expires_at attribute.
     # Default: `:remember_me_token_expires_at`
     #
-    # user.remember_me_token_expires_at_attribute_name =
+    user.remember_me_token_expires_at_attribute_name = :remember_me_token_expires_at
 
     # How long in seconds the session length will be
     # Default: `60 * 60 * 24 * 7`
