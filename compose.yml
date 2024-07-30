@@ -4,6 +4,9 @@ services:
     environment:
       TZ: Asia/Tokyo
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: myapp_development
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
@@ -27,6 +30,10 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
+      DATABASE_NAME: myapp_development
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
     ports:
       - "3000:3000"
     depends_on:
