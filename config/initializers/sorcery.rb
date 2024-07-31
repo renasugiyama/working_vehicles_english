@@ -247,12 +247,12 @@ Rails.application.config.sorcery.configure do |config|
     # Specify username attributes, for example: [:username, :email].
     # Default: `[:email]`
     #
-    # user.username_attribute_names =
+    user.username_attribute_names = [:email]
 
     # Change *virtual* password attribute, the one which is used until an encrypted one is generated.
     # Default: `:password`
     #
-    user.password_attribute_name = [:email]
+    user.password_attribute_name = :password
 
     # Downcase the username before trying to authenticate, default is false
     # Default: `false`
@@ -267,7 +267,7 @@ Rails.application.config.sorcery.configure do |config|
     # Change default crypted_password attribute.
     # Default: `:crypted_password`
     #
-    # user.crypted_password_attribute_name =
+    user.crypted_password_attribute_name = :crypted_password
 
     # What pattern to use to join the password with the salt
     # Default: `""`
@@ -277,7 +277,7 @@ Rails.application.config.sorcery.configure do |config|
     # Change default salt attribute.
     # Default: `:salt`
     #
-    # user.salt_attribute_name =
+    user.salt_attribute_name = :salt
 
     # How many times to apply encryption to the password.
     # Default: 1 in test env, `nil` otherwise
