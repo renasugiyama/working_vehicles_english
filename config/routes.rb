@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'
+
+  resources :questions, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  get 'random_question', to: 'questions#random', as: 'random_question'
 end

@@ -1,0 +1,63 @@
+/* app/assets/stylesheets/questions.css */
+.question-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7fafc;
+}
+
+.question-card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  max-width: 50rem;
+  padding: 1.5rem;
+}
+
+.question-image {
+  margin-bottom: 1rem;
+  width: 50%;
+  height: auto;
+}
+
+.question-content {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.choice-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.choice-button {
+  background-color: #e2e8f0;
+  color: #1a202c;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-button {
+  background-color: #4299e1;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.back-button {
+  background-color: #718096;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
