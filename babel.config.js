@@ -65,7 +65,12 @@ module.exports = function(api) {
           loose: true
         }
       ],
-      '@babel/plugin-transform-optional-chaining',
+      [
+        '@babel/plugin-transform-optional-chaining',
+        {
+          loose: true
+        }
+      ],
       [
         '@babel/plugin-transform-runtime',
         {
