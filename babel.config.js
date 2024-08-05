@@ -28,7 +28,7 @@ module.exports = function(api) {
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
         {
-          forceAllTransforms: true,
+          targets: "> 0.25%, not dead", // これを追加してターゲットブラウザを指定
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
