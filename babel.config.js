@@ -28,7 +28,7 @@ module.exports = function(api) {
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
         {
-          targets: "> 0.25%, not dead", // これを追加してターゲットブラウザを指定
+          targets: "> 0.25%, not dead",
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
@@ -42,13 +42,13 @@ module.exports = function(api) {
       isTestEnv && 'babel-plugin-dynamic-import-node',
       '@babel/plugin-transform-destructuring',
       [
-        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-transform-class-properties',
         {
           loose: true
         }
       ],
       [
-        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-transform-object-rest-spread',
         {
           useBuiltIns: true
         }
@@ -81,6 +81,12 @@ module.exports = function(api) {
         '@babel/plugin-transform-regenerator',
         {
           async: false
+        }
+      ],
+      [
+        '@babel/plugin-transform-nullish-coalescing-operator',
+        {
+          loose: true
         }
       ]
     ].filter(Boolean)
