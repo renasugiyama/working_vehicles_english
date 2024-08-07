@@ -50,6 +50,7 @@ gem "bootsnap", require: false
 gem 'sorcery'
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'carrierwave', '~> 2.0'
+gem 'fog-aws'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
