@@ -4,7 +4,11 @@ class QuestionsController < ApplicationController
   def show; end
 
   def random
-    @question = Question.order("RAND()").first
+    if session[:current_question_id]
+      @question = Question.find(session[:current_question_id])
+    else
+      @question = Question.order("RAND()").first
+    end
     @choices = @question.choices
   end
 

@@ -1,2 +1,11 @@
-<h1>不正解です！もう一度挑戦しましょう。</h1>
-<%= link_to '再チャレンジ', retry_question_path %>
+<div class="question-container flex justify-center items-center min-h-screen bg-red-100">
+  <div class="question-card bg-white shadow-lg rounded-lg p-6 text-center animate__animated animate__rubberBand">
+    <h1 class="question-content text-2xl font-bold mb-4 text-red-600 animate-pulse">❌</h1>
+    <h1 class="question-content text-2xl font-bold mb-4 text-red-600 animate__flipInX">Unfortunately you gave an incorrect answer.</h1>
+    <p class="mb-6">Will you try again?</p>
+    <div class="choice-buttons flex justify-center space-x-4">
+      <%= link_to 'try again', random_question_path, class: "choice-button bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 transform hover:scale-105" %>
+      <%= link_to 'quit', root_path, class: "choice-button bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 transform hover:scale-105" %>
+    </div>
+  </div>
+</div>

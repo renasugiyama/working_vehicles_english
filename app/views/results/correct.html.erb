@@ -1,2 +1,11 @@
-<h1>正解です！</h1>
-<%= link_to '次の問題へ', next_question_path %>
+<div class="question-container flex justify-center items-center min-h-screen bg-green-100 relative overflow-hidden">
+  <div id="confetti-container"></div>
+  <div class="question-card bg-white shadow-lg rounded-lg p-6 text-center animate__animated animate__zoomIn">
+    <h1 class="question-content text-2xl font-bold mb-4 text-green-600 animate-pulse">🙆</h1>
+    <h1 class="question-content text-2xl font-bold mb-4 text-green-600 animate__flipInX">Congratulations!You got it right!</h1>
+    <p class="mb-6">Let's move on to the next question!</p>
+    <div class="choice-buttons flex justify-center space-x-4">
+      <%= link_to 'Next', random_question_path, class: "choice-button bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 transform hover:scale-105" %>
+    </div>
+  </div>
+</div>

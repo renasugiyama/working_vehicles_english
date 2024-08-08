@@ -1,19 +1,13 @@
 class ResultsController < ApplicationController
-  def create
-    choice = Choice.find(params[:id])
-    if choice.is_correct
-      redirect_to correct_result_path
+  def check
+    @choice = Choice.find(params[:id])
+    session[:current_question_id] = @choice.question.id  # 質問のIDをセッションに保存
+
+    if @choice.is_correct
+      session[:current_question_id] = nil  # 正解の場合にセッションをクリア
+      render 'correct'
     else
-      redirect_to incorrect_result_path
+      render 'incorrect'
     end
-  end
-
-  def correct
-  end
-
-  def incorrect
-  end
-
-  def streak
   end
 end
