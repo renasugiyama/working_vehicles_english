@@ -1,5 +1,5 @@
 <!-- app/views/questions/random.html.erb -->
-<div class="question-container">
+<div class="question-container flex flex-col justify-center min-h-screen">
   <div class="question-card">
     <div class="p-6 bg-gray-50 text-center">
       <%= image_tag @question.question_image.url, width: 500, height: 500, class: "question-image mx-auto mb-4" if @question.question_image.present? %>
