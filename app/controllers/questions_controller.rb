@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  skip_before_action :require_login, only: [:random]
+  before_action :require_admin, except: [:random]
 
   def show; end
 
@@ -24,7 +26,6 @@ class QuestionsController < ApplicationController
   
     @choices = @question.choices
   end
-  
 
   def new
     @question = Question.new
@@ -84,6 +85,13 @@ class QuestionsController < ApplicationController
       @question.choices.each do |choice|
         choice.is_correct = (choice.id.to_s == correct_choice_id)
       end
+    end
+  end
+
+  def require_admin
+    unless current_user&.admin?
+      flash[:alert] = "管理者のみがアクセスできます。"
+      redirect_to root_path
     end
   end
 end
