@@ -50,7 +50,9 @@ gem "bootsnap", require: false
 gem 'sorcery'
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'carrierwave', '~> 2.0'
-gem 'jquery-rails'
+gem 'enum_help'
+
+gem 'fog-aws'
 
 
 group :development, :test do
@@ -74,3 +76,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "jsbundling-rails", "~> 1.3"

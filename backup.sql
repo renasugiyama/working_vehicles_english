@@ -117,7 +117,7 @@ CREATE TABLE `schema_migrations` (
 
 LOCK TABLES `schema_migrations` WRITE;
 /*!40000 ALTER TABLE `schema_migrations` DISABLE KEYS */;
-INSERT INTO `schema_migrations` VALUES ('0'),('20240729042210'),('20240731053607'),('20240731053725'),('20240731064143'),('20240802013340'),('20240802013529');
+INSERT INTO `schema_migrations` VALUES ('0'),('20240729042210'),('20240731053607'),('20240731053725'),('20240731064143'),('20240802013340'),('20240802013529'),('20240815081412');
 /*!40000 ALTER TABLE `schema_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,9 +136,10 @@ CREATE TABLE `users` (
   `name` varchar(255) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
+  `role` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_users_on_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +148,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'alina172021@gmail.com','$2a$10$WngCQLhGy.VVblhCqq4z3.z6.BqYAD7cZroX5DiiHxO26ZtjjE/h.','rNsxJ69qztoMB5T9Vgsj','admin','2024-07-30 02:32:16.435171','2024-07-30 02:32:16.435171');
+INSERT INTO `users` VALUES (1,'alina172021@gmail.com','$2a$10$WngCQLhGy.VVblhCqq4z3.z6.BqYAD7cZroX5DiiHxO26ZtjjE/h.','rNsxJ69qztoMB5T9Vgsj','admin','2024-07-30 02:32:16.435171','2024-08-15 08:17:27.193253',1),(2,'googooahyo@gmail.com','$2a$10$H3RpyDZiv0BzuqWoxhaFiu.dQYzNyUow.KE.3tWAi1F6ijZtjfqxi','-NBt8Q53XF7pD3ruRjAD','user','2024-08-15 08:23:54.307913','2024-08-15 08:23:54.307913',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-08 23:25:08
+-- Dump completed on 2024-08-16 14:06:20
