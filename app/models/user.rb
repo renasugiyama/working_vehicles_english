@@ -26,7 +26,7 @@ class User < ApplicationRecord
       nil
     end
   end
-  
+
   private
 
   def prevent_role_change
