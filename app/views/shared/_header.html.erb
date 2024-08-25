@@ -10,11 +10,11 @@
     </div>
     <div class="flex items-center space-x-4">
       <div class="relative">
-        <button id="menuButton" class="bg-white-200 text-black-700 border border-black px-4 py-2 rounded">
+        <button id="menuButton" class="text-black-700 border border-black px-4 py-2 rounded">
           Menu
         </button>
         <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
-          <%= link_to 'マイページ', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'マイページ', mypage_display_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <%= link_to 'プレイヤー切替', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <%= link_to '設定', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <% if current_user.admin? %>

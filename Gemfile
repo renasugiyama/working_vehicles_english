@@ -15,7 +15,7 @@ gem 'mysql2', '>= 0.4.4'
 gem "puma", ">= 5.0"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
-# gem "jsbundling-rails"
+gem "jsbundling-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
@@ -51,7 +51,6 @@ gem 'sorcery'
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'carrierwave', '~> 2.0'
 gem 'enum_help'
-
 gem 'fog-aws'
 
 

@@ -1,0 +1,115 @@
+<div class="mypage-container pt-32 max-w-xl mx-auto">
+  <!-- ヘッダー部分 -->
+  <div class="header flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">マイページ編集</h1>
+  </div>
+
+  <!-- form_with を1つに統一 -->
+  <%= form_with model: @user, url: mypage_path, method: :patch, local: true do |f| %>
+
+    <!-- ユーザー情報編集部分 -->
+    <div class="user-info mt-6 p-4 bg-gray-300 rounded-lg flex flex-col items-center">
+
+    <div class="user-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+      <% if @user.user_image.is_a?(CarrierWave::Uploader::Base) && @user.user_image.file.present? %>
+        <%= image_tag @user.user_image.url, alt: "ユーザーアイコン", class: "w-full h-full object-cover" %>
+      <% elsif @user.user_image.is_a?(ActionDispatch::Http::UploadedFile) %>
+        <!-- アップロード中のファイルを表示しない -->
+      <% else %>
+        <span class="text-sm"><%= @user.name %></span>
+      <% end %>
+    </div>
+      
+      <div class="form-group mt-4" style="width: 100%; max-width: 19rem;">
+        <%= f.label :name, "ユーザーネーム", class: "text-sm text-gray-600" %>
+        <%= f.text_field :name, class: "form-control mt-1 block w-full px-2 py-1 border border-gray-300 rounded" %>
+      </div>
+    
+      <div class="form-group mt-4" style="width: 100%; max-width: 20rem;">
+        <%= f.label :user_image, "プロフィール画像", for: "user_image_input", class: "text-sm text-gray-600" %>
+        <%= f.file_field :user_image, id: "user_image_input", class: "form-control mt-1 block w-full px-2 py-1 border border-gray-100 rounded" %>
+
+        <%= link_to "画像を未設定にする", reset_user_image_mypages_path(id: @user.id), method: :delete, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当に画像をリセットしますか？' } %>
+      </div>
+    </div>
+
+
+    
+    <!-- 子どもプロフィール編集部分 -->
+    <div class="players-info mt-6">
+      <h2 class="text-xl font-semibold flex items-center">
+        <span class="material-icons mr-2">👤</span>子どもプロフィール
+      </h2>
+
+      <%= f.fields_for :players, @players do |player_fields| %>
+        <div class="player-card mt-6 p-4 bg-gray-100 rounded-lg flex flex-col items-center">
+          <div class="player-details flex-grow">
+            <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+              <% if player_fields.object.player_image.present? %>
+                <%= image_tag player_fields.object.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+              <% else %>
+                <span class="text-sm nickname-display"><%= player_fields.object.nickname || "新しいプレイヤー" %></span>
+              <% end %>
+            </div>
+
+            <div class="form-group">
+              <%= player_fields.label :nickname, "プレイヤーネーム", class: "text-sm text-gray-600" %>
+              <%= player_fields.text_field :nickname, class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded nickname-input" %>
+            </div>
+
+            <div class="form-group mt-4">
+              <%= player_fields.label :birth_date, "誕生日", class: "text-sm text-gray-600" %>
+              <%= player_fields.date_field :birth_date, class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded" %>
+            </div>
+
+            <div class="form-group mt-4">
+              <%= player_fields.label :gender, "性別", class: "text-sm text-gray-600" %>
+              <%= player_fields.select :gender, options_for_select([['男の子', 'male'], ['女の子', 'female']]), class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded" %>
+            </div>
+
+            <div class="form-group mt-4">
+              <%= player_fields.label :player_image, "プレイヤー画像", for: "player_image_input", class: "text-sm text-gray-600" %>
+              <%= player_fields.file_field :player_image, id: "player_image_input", class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
+
+              <!-- 画像リセットリンク -->
+              <% if player_fields.object.id.present? %>
+                <%= link_to "画像を未設定にする", reset_player_image_mypages_path(player_id: player_fields.object.id), method: :delete, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にプレイヤー画像をリセットしますか？' } %>
+              <% end %>
+            </div>
+
+            <!-- 削除フラグを管理 -->
+            <div class="form-group mt-4">
+             <!-- 既存のplayerの削除ボタン -->
+           <% if player_fields.object.id.present? %>
+              <%= link_to "削除", "#", class: "btn btn-danger bg-red-500 text-white mt-4 px-3 py-1 rounded", onclick: "if(confirm('削除してしまうと今までの記録が全て消えてしまいます。削除してもよろしいでしょうか？')) { this.closest('div.player-card').querySelector('.destroy-flag').value = '1'; this.closest('form').submit(); } return false;" %>
+              <%= player_fields.hidden_field :_destroy, class: "destroy-flag" %>
+            <% else %>
+              <!-- 新規プレイヤーの削除ボタン -->
+              <button type="button" class="remove-new-player-btn bg-red-500 text-white mt-4 px-3 py-1 rounded">削除</button>
+            <% end %>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="form-group mt-6">
+      <button type="button" id="add-player-btn" class="btn btn-secondary flex items-center">
+        <svg class="h-8 w-8 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+        </svg>
+        子どもプロフィールを追加する
+      </button>
+    </div>
+
+    <!-- 完了ボタンと戻るボタン -->
+    <div class="form-group mt-6 text-right flex justify-between items-center">
+      <!-- 戻るボタン -->
+      <%= link_to '戻る', mypage_display_path, class: "bg-gray-100 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" %>
+
+      <!-- 完了ボタン -->
+      <%= f.submit '完了', class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-4" %>
+    </div>
+  <% end %>
