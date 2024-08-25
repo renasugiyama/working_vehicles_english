@@ -22,4 +22,12 @@ Rails.application.routes.draw do
       get 'check'
     end
   end
+  
+  resources :mypages, only: [:edit, :update, :show, :destroy] do
+    resources :players, only: [:new, :create, :edit, :update, :destroy, :show]
+    delete :reset_user_image, on: :collection
+    delete :reset_player_image, on: :collection
+  end
+
+  get 'mypage/display', to: 'mypages#display', as: 'mypage_display'
 end
