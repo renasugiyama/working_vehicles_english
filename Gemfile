@@ -51,6 +51,7 @@ gem 'sorcery'
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'carrierwave', '~> 2.0'
 gem 'enum_help'
+gem 'jquery-rails'
 gem 'fog-aws'
 
 
@@ -74,4 +75,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> feature/answer

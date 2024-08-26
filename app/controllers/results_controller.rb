@@ -1,6 +1,4 @@
 class ResultsController < ApplicationController
-  skip_before_action :require_login, only: [:check]
-
   def check
     @choice = Choice.find(params[:id])
     session[:current_question_id] = @choice.question.id  # 質問のIDをセッションに保存
