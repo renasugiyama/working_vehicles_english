@@ -322,6 +322,7 @@ DEPENDENCIES
   carrierwave (~> 2.0)
   cssbundling-rails
   debug
+  fog-aws
   font-awesome-sass (~> 5.15.1)
   jbuilder
   jquery-rails
