@@ -11,7 +11,6 @@ class QuestionsController < ApplicationController
     end
     @choices = @question.choices
   end
-  
 
   def new
     @question = Question.new
