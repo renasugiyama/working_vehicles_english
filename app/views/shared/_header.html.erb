@@ -37,6 +37,11 @@
         </div>
       </div>
       <h1 class="text-4xl"><%= link_to '🏅', '#' %></h1>
+      <% if current_player.present? %>
+        <%= link_to 'records', player_results_path(current_player), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      <% else %>
+        <p>No player available</p>
+      <% end %>
     </div>
   </div>
 </header>

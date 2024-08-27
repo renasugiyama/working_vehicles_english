@@ -1,0 +1,24 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-screen-sm p-6" style="width: 800px;">
+    <div class="p-6 bg-gray-50">
+      <h1 class="text-2xl font-bold mb-4"><%= @player.nickname %>'s answer</h1>
+      <h1 class="mb-4"><%= @result.question.content %></h1>
+      <div class="mb-4">
+        <%= image_tag @result.question.question_image.url, width: 400, height: 400, class: "mb-4" if @result.question.question_image.present? %>
+      </div>
+      <ul class="mb-4">
+          <li class="mb-2 <%= 'text-green-500 font-bold' if @result.choice.is_correct %>">
+            <%= @result.choice.content %> 
+            <% if @result.choice.is_correct %>
+              <span class="text-green-500 font-bold">(正解)</span>
+            <% else %>
+              <span class="text-red-500 font-bold">(不正解)</span>
+            <% end %>
+          </li>
+      </ul>
+      <div class="space-y-4">
+        <%= link_to '戻る', player_results_path(@player), class: "text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

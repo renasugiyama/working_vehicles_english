@@ -33,7 +33,7 @@
           <p class="font-semibold">名前:        <%= player.nickname %></p>
           <p class="text-gray-600">誕生年月:     <%= player.birth_date.present? ? player.birth_date.strftime('%Y年%m月') : 'unknown' %></p>
           <p class="text-gray-600">性別:        <%= player.gender %></p>
-          <p class="text-gray-600">獲得ポイント: </p>
+          <p class="text-gray-600">獲得ポイント: <%= player.correct_count.to_i - player.incorrect_count.to_i %></p>
         </div>
         <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center ml-4 overflow-hidden">
           <% if player.player_image.present? %>
