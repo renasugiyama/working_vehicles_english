@@ -1,5 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  skip_before_action :require_login, only: [:random]
+  before_action :require_admin, except: [:random]
+  before_action :ensure_player_selected, only: [:random]
 
   def show; end
 
@@ -7,8 +10,21 @@ class QuestionsController < ApplicationController
     if session[:current_question_id]
       @question = Question.find(session[:current_question_id])
     else
-      @question = Question.order("RAND()").first
+      displayed_question_ids = session[:displayed_question_ids] || []
+      available_questions = Question.where.not(id: displayed_question_ids)
+      
+      if available_questions.exists?
+        @question = available_questions.order("RAND()").first
+      else
+        # すべての質問を表示し終えたら、セッションをリセットして再度表示を始める
+        session[:displayed_question_ids] = []
+        @question = Question.order("RAND()").first
+      end
+  
+      session[:displayed_question_ids] ||= []
+      session[:displayed_question_ids] << @question.id
     end
+  
     @choices = @question.choices
   end
 
@@ -49,6 +65,14 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
+  # プレイヤーが設定されているか確認するメソッド
+  def ensure_player_selected
+    if current_user && session[:current_player_id].nil?
+      flash[:alert] = "プレイヤーを設定してください。"
+      redirect_to switch_players_path
+    end
+  end
+
   private
 
   def set_question
@@ -70,6 +94,13 @@ class QuestionsController < ApplicationController
       @question.choices.each do |choice|
         choice.is_correct = (choice.id.to_s == correct_choice_id)
       end
+    end
+  end
+
+  def require_admin
+    unless current_user&.admin?
+      flash[:alert] = "管理者のみがアクセスできます。"
+      redirect_to root_path
     end
   end
 end

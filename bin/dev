@@ -1,6 +1,4 @@
-#!/bin/sh
-# Ensure the script exits on error
-set -e
+#!/usr/bin/env sh
 
 if gem list --no-installed --exact --silent foreman; then
   echo "Installing foreman..."

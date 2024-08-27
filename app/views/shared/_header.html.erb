@@ -1,4 +1,4 @@
-<header class="bg-white shadow-md">
+<header class="bg-white shadow-md" style="position: fixed; top: 0; width: 100%; z-index: 10; background-color: white;">
   <div class="container mx-auto flex items-center justify-between py-4">
     <div class="text-center">
       <%= link_to root_path, class: 'block text-4xl font-bold text-gray-800 hover:text-gray-600' do %>
@@ -13,10 +13,26 @@
         <button id="menuButton" class="text-black-700 border border-black px-4 py-2 rounded">
           Menu
         </button>
-        <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
+        <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg p-4" style="width: 180px;">
+          <!-- プレイヤーの画像と名前を表示 -->
+          <div class="flex items-center mb-4">
+            <% if current_player && current_player.player_image.present? %>
+              <%= image_tag current_player.player_image.url, alt: "現在のプレイヤー", class: "w-16 h-16 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4" %>
+            <% else %>
+              <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4">
+                <span class="text-sm nickname-display"><%= current_player ? current_player.nickname : "未設定" %></span>
+              </div>
+            <% end %>
+            <span class="text-lg"><%= current_player ? current_player.nickname : "未設定" %></span>
+          </div>
+          <!-- メニュー項目 -->
           <%= link_to 'マイページ', mypage_display_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
-          <%= link_to 'プレイヤー切替', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'プレイヤー切替', switch_players_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <%= link_to '設定', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <% if current_user.admin? %>
+            <%= link_to '質問作成', new_question_path, class: "block px-4 py-2 text-blue-700 hover:bg-gray-100" %>
+            <%= link_to '質問一覧', questions_path, class: "block px-4 py-2 text-blue-700 hover:bg-gray-100" %>
+          <% end %>
           <%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
         </div>
       </div>

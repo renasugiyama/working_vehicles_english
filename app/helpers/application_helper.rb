@@ -20,4 +20,8 @@ module ApplicationHelper
       "text-gray-700"
     end
   end
+
+  def current_player
+    @current_player ||= current_user.players.find_by(id: session[:current_player_id])
+  end
 end
