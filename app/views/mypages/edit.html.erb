@@ -10,15 +10,15 @@
     <!-- ユーザー情報編集部分 -->
     <div class="user-info mt-6 p-4 bg-gray-300 rounded-lg flex flex-col items-center">
 
-    <div class="user-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
-      <% if @user.user_image.is_a?(CarrierWave::Uploader::Base) && @user.user_image.file.present? %>
-        <%= image_tag @user.user_image.url, alt: "ユーザーアイコン", class: "w-full h-full object-cover" %>
-      <% elsif @user.user_image.is_a?(ActionDispatch::Http::UploadedFile) %>
-        <!-- アップロード中のファイルを表示しない -->
-      <% else %>
-        <span class="text-sm"><%= @user.name %></span>
-      <% end %>
-    </div>
+      <div class="user-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+        <% if @user.user_image.is_a?(CarrierWave::Uploader::Base) && @user.user_image.file.present? %>
+          <%= image_tag @user.user_image.url, alt: "ユーザーアイコン", class: "w-full h-full object-cover" %>
+        <% elsif @user.user_image.is_a?(ActionDispatch::Http::UploadedFile) %>
+          <!-- アップロード中のファイルを表示しない -->
+        <% else %>
+          <span class="text-sm"><%= @user.name %></span>
+        <% end %>
+      </div>
       
       <div class="form-group mt-4" style="width: 100%; max-width: 19rem;">
         <%= f.label :name, "ユーザーネーム", class: "text-sm text-gray-600" %>

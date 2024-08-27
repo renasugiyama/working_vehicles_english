@@ -1,0 +1,41 @@
+<div class="switchplayer-container pt-32 max-w-xl mx-auto">
+  <!-- ヘッダー部分 -->
+  <div class="header flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">プレイヤーを選択してください</h1>
+  </div>
+  
+  <div class="players-list p-4 bg-gray-300 rounded-lg flex flex-col items-left">
+    <div class="players-list">
+      <% @players.each do |player| %>
+        <div class="player-card p-4 bg-gray-100 rounded-md mt-4 <%= 'bg-blue-200' if session[:current_player_id] == player.id %> flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden <%= 'bg-blue-200' if session[:current_player_id] == player.id %>">
+              <% if player.player_image.present? %>
+                <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+              <% else %>
+                <span class="text-sm nickname-display"><%= player.nickname %></span>
+              <% end %>
+            </div>
+            <div class="flex flex-col justify-center">
+              <p>プレイヤーネーム: <%= player.nickname %></p>
+              <% if session[:current_player_id] == player.id %>
+                <p class="text-green-500 mt-2">現在選択中</p>
+              <% end %>
+            </div>
+          </div>
+          <% if session[:current_player_id] == player.id %>
+            <div style="background-color: black; display: inline-block; padding: 20px; border-radius: 20px;">
+              <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />  
+                <circle cx="8.5" cy="7" r="4" />  
+                <polyline points="17 11 19 13 23 9" />
+              </svg>
+            </div>
+          <% else %>
+          <%= link_to '切替', switch_player_path(player.id), method: :post, class: "btn btn-primary mt-2", style: "padding: 20px;" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
