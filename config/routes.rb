@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   get 'static_pages/top'
-  
   root 'static_pages#top'
 
   resources :users, only: %i[new create]
@@ -33,4 +32,16 @@ Rails.application.routes.draw do
       get 'switch'  # プレイヤー選択ページの表示
     end
   end
+
+  resources :players do
+    resources :results, only: [:create, :index, :show] do
+      member do
+        get 'check'
+      end
+    end
+  end
+
+  # correct と incorrect アクションのルーティングを追加
+  get 'results/correct', to: 'results#correct', as: 'correct_results'
+  get 'results/incorrect', to: 'results#incorrect', as: 'incorrect_results'
 end

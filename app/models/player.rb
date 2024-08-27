@@ -1,5 +1,6 @@
 class Player < ApplicationRecord
   belongs_to :user
+  has_many :results, dependent: :destroy
 
   mount_uploader :player_image, PlayerImageUploader
 
