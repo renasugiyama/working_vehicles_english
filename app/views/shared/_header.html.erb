@@ -36,7 +36,7 @@
           <%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
         </div>
       </div>
-      <h1 class="text-4xl"><%= link_to '🏅', '#' %></h1>
+      <h1 class="text-4xl"><%= link_to '🏅', rankings_path %></h1>
       <% if current_player.present? %>
         <%= link_to 'records', player_results_path(current_player), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
       <% else %>
