@@ -17,18 +17,23 @@
           <!-- プレイヤーの画像と名前を表示 -->
           <div class="flex items-center mb-4">
             <% if current_player && current_player.player_image.present? %>
-              <%= image_tag current_player.player_image.url, alt: "現在のプレイヤー", class: "w-16 h-16 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4" %>
+              <%= link_to mypage_display_path do %>
+                <%= image_tag current_player.player_image.url, alt: "現在のプレイヤー", class: "w-16 h-16 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4" %>
+              <% end %>
             <% else %>
-              <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4">
-                <span class="text-sm nickname-display"><%= current_player ? current_player.nickname : "未設定" %></span>
-              </div>
+              <%= link_to mypage_display_path, class: 'flex items-center' do %>
+                <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4">
+                  <span class="text-sm nickname-display"><%= current_player ? current_player.nickname : "未設定" %></span>
+                </div>
+              <% end %>
             <% end %>
-            <span class="text-lg"><%= current_player ? current_player.nickname : "未設定" %></span>
+            <%= link_to mypage_display_path, class: 'text-lg text-gray-800 hover:text-gray-600' do %>
+              <span><%= current_player ? current_player.nickname : "未設定" %></span>
+            <% end %>
           </div>
           <!-- メニュー項目 -->
-          <%= link_to 'マイページ', mypage_display_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <%= link_to 'プレイヤー切替', switch_players_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
-          <%= link_to '設定', '#', class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to '設定', user_setting_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           <% if current_user.admin? %>
             <%= link_to '質問作成', new_question_path, class: "block px-4 py-2 text-blue-700 hover:bg-gray-100" %>
             <%= link_to '質問一覧', questions_path, class: "block px-4 py-2 text-blue-700 hover:bg-gray-100" %>
