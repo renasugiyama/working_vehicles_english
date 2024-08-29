@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'
+  get 'setting', to: 'users#setting', as: :user_setting
+
+  resources :password_resets, only: %i[new create edit update]
 
   resources :questions, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   get 'random_question', to: 'questions#random', as: 'random_question'
@@ -45,4 +48,6 @@ Rails.application.routes.draw do
   # correct と incorrect アクションのルーティングを追加
   get 'results/correct', to: 'results#correct', as: 'correct_results'
   get 'results/incorrect', to: 'results#incorrect', as: 'incorrect_results'
+
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

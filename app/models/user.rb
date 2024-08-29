@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  authenticates_with_sorcery!
+  authenticates_with_sorcery! do |config|
+    config.reset_password_mailer = UserMailer # パスワードリセット時のMailerを設定
+  end
 
   mount_uploader :user_image, UserImageUploader
 
@@ -11,11 +13,12 @@ class User < ApplicationRecord
   before_update :prevent_role_change, if: :admin?
   before_create :ensure_not_admin
 
-  validates :password, length: { minimum: 5 }, if: -> { new_record? || changes[:crypted_password] }
+  validates :password, length: { minimum: 7 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, uniqueness: true
+  validates :reset_password_token, uniqueness: true, allow_nil: true
 
   def user_image_url
     if user_image.is_a?(CarrierWave::Uploader::Base)
