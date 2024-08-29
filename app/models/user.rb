@@ -13,12 +13,20 @@ class User < ApplicationRecord
   before_update :prevent_role_change, if: :admin?
   before_create :ensure_not_admin
 
+  attr_accessor :current_password  # 現在のパスワードを一時的に保持するための仮想属性
+
   validates :password, length: { minimum: 7 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, uniqueness: true
   validates :reset_password_token, uniqueness: true, allow_nil: true
+
+  # 新しいメールアドレスのバリデーション
+  validates :unconfirmed_email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }, if: -> { unconfirmed_email.present? }
+
+  # 現在のパスワードが正しいかどうかのバリデーション
+  validate :correct_current_password, if: -> { current_password.present? }
 
   def user_image_url
     if user_image.is_a?(CarrierWave::Uploader::Base)
@@ -28,6 +36,11 @@ class User < ApplicationRecord
     else
       nil
     end
+  end
+
+  # Confirmation token is valid for 2 days
+  def confirmation_token_valid?
+    (self.confirmation_sent_at + 2.days) > Time.current
   end
 
   private
@@ -41,6 +54,12 @@ class User < ApplicationRecord
 
   def ensure_not_admin
     self.role = :user if self.role == "admin"
+  end
+
+  def correct_current_password
+    unless valid_password?(current_password)
+      errors.add(:base, "入力されたパスワードが正しくありません")
+    end
   end
 
   def user_params

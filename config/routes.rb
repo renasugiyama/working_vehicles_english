@@ -3,7 +3,14 @@ Rails.application.routes.draw do
   get 'static_pages/top'
   root 'static_pages#top'
 
-  resources :users, only: %i[new create]
+  resources :users, only: %i[new create edit update destroy] do
+    member do
+      get 'edit_email'
+      patch 'update_email'
+      get 'confirm_email_change'
+    end
+  end
+
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'

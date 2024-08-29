@@ -1,0 +1,18 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-md p-8">
+    <h1 class="text-2xl font-semibold text-center mb-6">メールアドレス変更</h1>
+    <%= form_with model: @user, url: update_email_user_path(@user), local: true, data: { turbo: false } do |form| %>
+      <div class="mb-4">
+        <%= form.label :email, "新しいメールアドレス", class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.email_field :email, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", value: ""  %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :current_password, "現在のパスワード", class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.password_field :current_password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+      <div class="flex items-center justify-between">
+        <%= form.submit "メールアドレスを更新", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      </div>
+    <% end %>
+  </div>
+</div>
