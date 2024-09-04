@@ -15,6 +15,17 @@ class PlayersController < ApplicationController
     # params[:id]がない場合、このアクションはプレイヤーの選択ページを表示します。
   end
 
+  def player_mypage
+    @current_player ||= current_user.players.find_by(id: session[:current_player_id]) # 現在のプレイヤーを取得
+
+    if @current_player.nil?
+      flash[:alert] = 'プレイヤーが設定されていません。選択してください。'
+      redirect_to switch_players_path
+    else
+      @play_count = @current_player.results.count # プレイ件数を取得
+    end
+  end
+
   private
 
   def set_players

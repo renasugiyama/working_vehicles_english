@@ -1,41 +1,53 @@
 <div class="switchplayer-container pt-32 max-w-xl mx-auto">
   <!-- ヘッダー部分 -->
   <div class="header flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">プレイヤーを選択してください</h1>
+    <h1 class="text-3xl font-bold text-gray-800">
+      <% if session[:current_player_id].present? %>
+        プレイヤー切り替え
+      <% else %>
+        プレイヤーを選択してください
+      <% end %>
+    </h1>
   </div>
   
-  <div class="players-list p-4 bg-gray-300 rounded-lg flex flex-col items-left">
-    <div class="players-list">
-      <% @players.each do |player| %>
-        <div class="player-card p-4 bg-gray-100 rounded-md mt-4 <%= 'bg-blue-200' if session[:current_player_id] == player.id %> flex items-center justify-between">
-          <div class="flex items-center">
-            <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden <%= 'bg-blue-200' if session[:current_player_id] == player.id %>">
-              <% if player.player_image.present? %>
-                <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
-              <% else %>
-                <span class="text-sm nickname-display"><%= player.nickname %></span>
-              <% end %>
+  <div class="players-list p-4 bg-white rounded-lg shadow-md flex flex-col items-left">
+    <% if @players.present? %>
+      <!-- プレイヤーが存在する場合の表示 -->
+      <div class="players-list">
+        <% @players.each do |player| %>
+          <div class="player-card p-4 bg-gray-50 rounded-md mt-4 shadow-lg transition-transform hover:scale-105 flex items-center justify-between <%= 'border-4 border-blue-500' if session[:current_player_id] == player.id %>">
+            <div class="flex items-center">
+              <div class="player-icon w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden <%= 'bg-blue-200' if session[:current_player_id] == player.id %>">
+                <% if player.player_image.present? %>
+                  <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover rounded-full" %>
+                <% else %>
+                  <span class="text-sm font-medium text-gray-700"><%= player.nickname %></span>
+                <% end %>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-lg font-semibold text-gray-700"><%= player.nickname %></p>
+              </div>
             </div>
-            <div class="flex flex-col justify-center">
-              <p>プレイヤーネーム: <%= player.nickname %></p>
-              <% if session[:current_player_id] == player.id %>
-                <p class="text-green-500 mt-2">現在選択中</p>
-              <% end %>
-            </div>
+            <% if session[:current_player_id] == player.id %>
+              <div class="bg-black p-3 rounded-full">
+                <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />  
+                  <circle cx="8.5" cy="7" r="4" />  
+                  <polyline points="17 11 19 13 23 9" />
+                </svg>
+              </div>
+            <% else %>
+              <%= link_to '選択', switch_player_path(player.id), method: :post, class: "btn btn-primary mt-2 px-4 py-2 rounded-lg hover:bg-white-700 transition-colors" %>
+            <% end %>
           </div>
-          <% if session[:current_player_id] == player.id %>
-            <div style="background-color: black; display: inline-block; padding: 20px; border-radius: 20px;">
-              <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />  
-                <circle cx="8.5" cy="7" r="4" />  
-                <polyline points="17 11 19 13 23 9" />
-              </svg>
-            </div>
-          <% else %>
-          <%= link_to '切替', switch_player_path(player.id), method: :post, class: "btn btn-primary mt-2", style: "padding: 20px;" %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- プレイヤーが存在しない場合のメッセージ -->
+      <p class="text-center mt-1 text-gray-600">プレイヤーがまだ作成されていません。</p>
+    <% end %>
   </div>
+  <%= link_to '新しいプレイヤーを作成する', mypage_display_path, class: "mt-8 block bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors" %>
+  <%= link_to 'ゲームを開始する', random_question_path, class: "mt-4 block bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors" %>
+  <%= link_to 'プレイヤーページ', player_mypage_players_path, class: "mt-4 block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors" %>
 </div>

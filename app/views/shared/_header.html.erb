@@ -1,4 +1,4 @@
-<header class="bg-white shadow-md" style="position: fixed; top: 0; width: 100%; z-index: 10; background-color: white;">
+<header class="bg-white shadow-md z-50 relative">
   <div class="container mx-auto flex items-center justify-between py-4">
     <div class="text-center">
       <%= link_to root_path, class: 'block text-4xl font-bold text-gray-800 hover:text-gray-600' do %>
@@ -8,26 +8,26 @@
         はたらくくるま
       <% end %>
     </div>
-    <div class="flex items-center space-x-4">
-      <div class="relative">
+    <div class="flex items-center space-x-4 relative">
+      <div class="relative z-50">
         <button id="menuButton" class="text-black-700 border border-black px-4 py-2 rounded">
           Menu
         </button>
-        <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg p-4" style="width: 180px;">
+        <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">
           <!-- プレイヤーの画像と名前を表示 -->
           <div class="flex items-center mb-4">
             <% if current_player && current_player.player_image.present? %>
-              <%= link_to mypage_display_path do %>
+              <%= link_to player_mypage_players_path do %>
                 <%= image_tag current_player.player_image.url, alt: "現在のプレイヤー", class: "w-16 h-16 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4" %>
               <% end %>
             <% else %>
-              <%= link_to mypage_display_path, class: 'flex items-center' do %>
+              <%= link_to player_mypage_players_path, class: 'flex items-center' do %>
                 <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mr-6 overflow-hidden mr-4">
                   <span class="text-sm nickname-display"><%= current_player ? current_player.nickname : "未設定" %></span>
                 </div>
               <% end %>
             <% end %>
-            <%= link_to mypage_display_path, class: 'text-lg text-gray-800 hover:text-gray-600' do %>
+            <%= link_to player_mypage_players_path, class: 'text-lg text-gray-800 hover:text-gray-600' do %>
               <span><%= current_player ? current_player.nickname : "未設定" %></span>
             <% end %>
           </div>
@@ -42,11 +42,6 @@
         </div>
       </div>
       <h1 class="text-4xl"><%= link_to '🏅', rankings_path %></h1>
-      <% if current_player.present? %>
-        <%= link_to 'records', player_results_path(current_player), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-      <% else %>
-        <p>No player available</p>
-      <% end %>
     </div>
   </div>
 </header>

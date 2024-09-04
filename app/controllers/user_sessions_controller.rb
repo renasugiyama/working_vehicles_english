@@ -7,10 +7,10 @@ class UserSessionsController < ApplicationController
     @user = login(params[:email], params[:password])
 
     if @user
-      redirect_to root_path, notice: 'ログインに成功しました'
+      redirect_to switch_players_path, notice: 'ログインに成功しました。プレイヤーを設定してゲームをスタートしてください'
     else
       flash.now[:alert] = 'ログインに失敗しました'
-      flash.now[:errors] = ['メールアドレスまたはパスワードが間違っています']
+      flash.now[:errors] = 'メールアドレスまたはパスワードが間違っています'
       render :new, status: :unprocessable_entity
     end
   end

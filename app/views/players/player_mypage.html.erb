@@ -1,0 +1,89 @@
+<div class="mypage-container pt-32 max-w-xl mx-auto">
+  <!-- ヘッダー部分 -->
+  <div class="header flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">プレイヤーページ</h1>
+  </div>
+
+  <% if current_player.present? %>
+    <!-- プレイヤー情報 -->
+    <div class="flex flex-col items-center p-4">
+      <!-- プレイヤーアイコン -->
+      <div class="w-24 h-24 bg-gray-200 rounded-full overflow-hidden shadow-md mb-3">
+        <% if current_player.player_image.present? %>
+          <%= image_tag current_player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+        <% else %>
+          <span class="text-sm flex items-center justify-center h-full text-gray-700"><%= current_player.nickname %></span>
+        <% end %>
+      </div>
+
+      <!-- プレイヤー詳細情報 -->
+      <p class="text-lg font-semibold text-gray-800 mt-8"><%= current_player.nickname %></p>
+      
+      <!-- 横並びの詳細情報 -->
+      <div class="flex justify-between w-full py-4 text-center">
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-gray-800">誕生年月</p>
+          <p class="text-sm text-gray-600"><%= current_player.birth_date.present? ? current_player.birth_date.strftime('%Y年%m月') : 'unknown' %></p>
+        </div>
+        <div class="border-l border-r mx-4"></div>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-gray-800">性別</p>
+          <p class="text-sm text-gray-600"><%= current_player.gender.present? ? (current_player.gender == 'male' ? '男' : '女') : 'unknown' %></p>
+        </div>
+        <div class="border-l border-r mx-4"></div>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-gray-800">プレイ</p>
+          <p class="text-sm text-gray-600"><%= @play_count %> 回</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 統計情報 -->
+    <div class="flex justify-center bg-gray-50 py-4 border-t gap-10">
+      <!-- アワード -->
+      <%= link_to '#', class: "hover:scale-105" do %>
+        <div class="flex flex-col items-center">
+          <svg class="h-8 w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
+            <circle cx="12" cy="8" r="7" />  
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+          </svg>
+          <p class="text-sm text-gray-600">Awards</p>
+        </div>
+      <% end %>
+      <!-- ランキング -->
+      <%= link_to player_results_path(current_player), class: "hover:scale-105" do %>
+        <div class="flex flex-col items-center">
+          <svg class="h-8 w-8 mb-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  
+            <path stroke="none" d="M0 0h24v24H0z"/>  
+            <line x1="8" y1="21" x2="16" y2="21" />  
+            <line x1="12" y1="17" x2="12" y2="21" />  
+            <line x1="7" y1="4" x2="17" y2="4" />  
+            <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />  
+            <circle cx="5" cy="9" r="2" />  
+            <circle cx="19" cy="9" r="2" />
+          </svg>
+          <p class="text-sm text-gray-600">Results</p>
+        </div>
+      <% end %>
+      <!-- 切替 -->
+      <%= link_to switch_players_path, class: "hover:scale-105" do %>
+        <div class="flex flex-col items-center">
+          <svg class="h-8 w-8 mb-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  
+            <path stroke="none" d="M0 0h24v24H0z"/>  
+            <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -5v5h5" />  
+            <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" />
+          </svg>
+          <p class="text-sm text-gray-600">Switch</p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <!-- プレイヤーが選択されていない場合の表示 -->
+    <p class="text-center text-gray-600 mt-8">プレイヤーが選択されていません。</p>
+    <p class="text-center text-gray-600 mt-8">
+      <%= link_to switch_players_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" do %>
+        プレイヤー選択する
+      <% end %>
+    </p>
+  <% end %>
+</div>
