@@ -1,4 +1,4 @@
-<header style="position: fixed; top: 0; width: 100%; z-index: 10; background-color: white;">
+<header style="background-color: white;">
   <div class="container mx-auto flex items-center justify-between py-4">
     <div class="text-center">
       <%= link_to root_path, class: 'block text-4xl font-bold text-gray-800 hover:text-gray-600' do %>
@@ -11,7 +11,7 @@
     <div class="flex items-center space-x-4">
       <%= link_to 'ログイン', login_path, class: "bg-white-200 text-black-700 border border-black px-4 py-2 rounded" %>
       <%= link_to '新規登録', new_user_path, class: "bg-black text-white px-4 py-2 rounded block text-center" %>
-      <h1 class="text-4xl">🏅</h1>
+      <h1 class="text-4xl"><%= link_to '🏅', rankings_path %></h1>
     </div>
   </div>
 </header>

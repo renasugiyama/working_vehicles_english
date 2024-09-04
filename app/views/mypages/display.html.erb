@@ -1,6 +1,6 @@
 <div class="mypage-container pt-32 max-w-xl mx-auto">
   <div class="header flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">マイページ</h1>
+    <h1 class="text-2xl font-bold">ユーザーページ</h1>
     <%= link_to edit_mypage_path(current_user), class: "btn btn-primary flex items-center justify-center w-8 h-8 bg-transparent border-none" do %>
     <svg class="h-8 w-8 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -24,7 +24,7 @@
 
   <div class="players-info mt-6">
   <h2 class="text-xl font-semibold flex items-center">
-    <span class="material-icons mr-2">👤</span>子どもプロフィール
+    <span class="material-icons mr-2">👤</span>プレイヤープロフィール
   </h2>
   <% if @players.present? %>
     <% @players.each do |player| %>
@@ -32,7 +32,7 @@
         <div class="player-details flex-grow">
           <p class="font-semibold">名前:        <%= player.nickname %></p>
           <p class="text-gray-600">誕生年月:     <%= player.birth_date.present? ? player.birth_date.strftime('%Y年%m月') : 'unknown' %></p>
-          <p class="text-gray-600">性別:        <%= player.gender %></p>
+          <p class="text-gray-600">性別:        <%= player.gender == 'male' ? '男' : '女' %></p>
           <p class="text-gray-600">獲得ポイント: <%= player.correct_count.to_i - player.incorrect_count.to_i %></p>
         </div>
         <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center ml-4 overflow-hidden">
@@ -45,7 +45,7 @@
       </div>
     <% end %>
   <% else %>
-    <p>登録された子どもプロフィールはありません。</p>
+    <p>プレイヤーが存在しません</p>
   <% end %>
   </div>
 </div>

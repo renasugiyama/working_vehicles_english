@@ -6,8 +6,14 @@
       <h1 class="question-content text-xl font-semibold mb-2"><%= @question.content %></h1>
       <div class="choice-buttons flex justify-center space-x-4">
         <% @question.choices.each do |choice| %>
-          <%= link_to check_result_path(choice), method: :get, class: "choice-button bg-gray-200 text-black px-4 py-2 rounded-md" do %>
-            <%= choice.content %>
+          <% if logged_in? %>
+            <%= link_to check_result_path(choice), class: "choice-button bg-gray-200 text-black px-4 py-2 rounded-md", data: { turbo: false } do %>
+              <%= choice.content %>
+            <% end %>
+          <% else %>
+            <%= link_to guest_check_result_path(choice), class: "choice-button bg-gray-200 text-black px-4 py-2 rounded-md", data: { turbo: false } do %>
+              <%= choice.content %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

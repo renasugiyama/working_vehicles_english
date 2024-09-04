@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :require_login, only: %i[new create]
+  before_action :set_user, only: [:setting, :destroy]
 
   def new
     @user = User.new
@@ -9,12 +10,19 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       auto_login(@user)  # 新しいユーザーを自動的にログインさせる
-      redirect_to root_path, notice: 'ユーザー登録が完了しました'
+      redirect_to switch_players_path, notice: 'ユーザー登録が完了しました。プレイヤーを作成して、ゲームをスタートしてください'
     else
       flash.now[:alert] = 'ユーザー登録に失敗しました'
       flash.now[:errors] = @user.errors.full_messages
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def setting; end
+
+  def destroy
+    @user.destroy
+    redirect_to root_path, notice: 'ユーザーが削除されました。'
   end
 
   def edit_email
@@ -78,6 +86,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_user
+    @user = current_user
+  end  
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :user_image)

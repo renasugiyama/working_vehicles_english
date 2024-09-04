@@ -4,6 +4,22 @@
       <h1 class="w-full py-4 text-center text-3xl font-bold"><%= @player.nickname %>'s answers</h1>
     </div>
     <div class="p-6 bg-gray-50">
+      <!-- 正解数と不正解数の表示（アイコン付き） -->
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center space-x-2 text-xl font-semibold text-green-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span><%= @results.select { |result| result.correct }.count %></span>
+        </div>
+        <div class="flex items-center space-x-2 text-xl font-semibold text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <span><%= @results.reject { |result| result.correct }.count %></span>
+        </div>
+      </div>
+      <!-- テーブル -->
       <table class="w-full divide-y divide-gray-200" style="max-width: 1800px;">
         <thead class="bg-gray-100">
           <tr>
@@ -53,7 +69,7 @@
                       <path d="M8 13a4 4 0 1 0 8 0m0 0H8" />
                     </svg>
                   <% else %>
-                    <svg class="h-8 w-8 text-red-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  
+                    <svg class="h-8 w-8 text-gray-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  
                       <path stroke="none" d="M0 0h24v24H0z"/>  
                       <circle cx="12" cy="12" r="9" />  
                       <line x1="9" y1="10" x2="9.01" y2="10" />  

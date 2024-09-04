@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'static_pages/top'
   root 'static_pages#top'
 
-  resources :users, only: %i[new create edit update destroy] do
+  resources :users, only: %i[new create edit update destroy setting] do
     member do
       get 'edit_email'
       patch 'update_email'
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :results, only: [] do
     member do
       get 'check'
+      get :guest_check
     end
   end
   
@@ -43,6 +44,8 @@ Rails.application.routes.draw do
       get 'switch'  # プレイヤー選択ページの表示
     end
   end
+
+  get 'players/player_mypage', to: 'players#player_mypage', as: 'player_mypage_players'
 
   resources :players do
     resources :results, only: [:create, :index, :show] do
