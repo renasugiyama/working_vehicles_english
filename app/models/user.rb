@@ -14,6 +14,7 @@ class User < ApplicationRecord
   before_create :ensure_not_admin
 
   attr_accessor :current_password  # 現在のパスワードを一時的に保持するための仮想属性
+  attr_accessor :terms_agreement   # terms_agreementという属性が扱えるようにする
 
   validates :password, length: { minimum: 7 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -27,6 +28,9 @@ class User < ApplicationRecord
 
   # 現在のパスワードが正しいかどうかのバリデーション
   validate :correct_current_password, if: -> { current_password.present? }
+
+  # 利用規約への同意が必須
+  validates :terms_agreement, acceptance: { accept: '1', message: 'に同意する必要があります' }, on: :create
 
   def user_image_url
     if user_image.is_a?(CarrierWave::Uploader::Base)

@@ -1,8 +1,9 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
   skip_before_action :require_login, only: [:random]
+  before_action :set_question, only: [:show, :edit, :update, :destroy]
   before_action :require_admin, except: [:random]
   before_action :ensure_player_selected, only: [:random]
+  before_action :check_terms_agreement, only: [:random], unless: -> { logged_in? }
 
   def show; end
 
@@ -101,6 +102,13 @@ class QuestionsController < ApplicationController
     unless current_user&.admin?
       flash[:alert] = "管理者のみがアクセスできます。"
       redirect_to root_path
+    end
+  end
+
+  # 利用規約に同意しているか確認する
+  def check_terms_agreement
+    unless session[:agreed_to_terms]
+      redirect_to terms_path # 利用規約ページのパスに変更
     end
   end
 end
