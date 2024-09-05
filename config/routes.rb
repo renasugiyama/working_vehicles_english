@@ -62,6 +62,9 @@ Rails.application.routes.draw do
   get 'terms', to: 'terms#show'
   post 'terms/agree', to: 'terms#agree', as: 'agree_terms'
   get 'terms/page', to: 'terms#terms_page', as: 'terms_page'
+  get 'terms/privacy', to: 'terms#privacy', as: 'privacy_terms'
+
+  get 'contact', to: 'static_pages#contact', as: 'contact'
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end
