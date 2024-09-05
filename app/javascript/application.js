@@ -9,3 +9,4 @@ import "./controllers"
 // Import the new JavaScript file
 import "./menu"
 import "./mypage"
+import "./speak";
