@@ -1,0 +1,25 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-white px-6 py-12">
+  <div class="w-full max-w-3xl">
+    <!-- ヘッダー -->
+    <h2 class="text-center text-2xl font-bold mb-12">同意事項</h2>
+    <p class="text-center mb-6 text-gray-700">本サービスのご利用には、下記の規約に同意していただく必要があります。</p>
+    <p class="text-center mb-6 text-gray-700">ユーザーの皆様は、以下の利用規約に同意いただいた上で、本アプリをご利用ください。</p>
+
+    <!-- チェックボックスとリンクのリスト -->
+    <div class="flex flex-col items-center mb-12"> <!-- リストを中央寄せするためのコンテナ -->
+      <div class="space-y-4">
+        <div class="flex items-start">
+          <input type="checkbox" id="terms1" class="mt-1 mr-3 border-gray-300 focus:ring-blue-500">
+          <label for="terms1" class="cursor-pointer">
+            <a href="<%= terms_path %>" class="text-blue-600 underline" target="_blank">利用規約</a>を読みました。
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 同意するボタン -->
+    <div class="text-center">
+      <%= button_to '同意する', agree_terms_path, method: :post, class: 'bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400' %>
+    </div>
+  </div>
+</div>

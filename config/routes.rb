@@ -59,5 +59,9 @@ Rails.application.routes.draw do
   get 'results/correct', to: 'results#correct', as: 'correct_results'
   get 'results/incorrect', to: 'results#incorrect', as: 'incorrect_results'
 
+  get 'terms', to: 'terms#show'
+  post 'terms/agree', to: 'terms#agree', as: 'agree_terms'
+  get 'terms/page', to: 'terms#terms_page', as: 'terms_page'
+
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end
