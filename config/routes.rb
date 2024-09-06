@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :rewards, only: [:index]
+  
   get 'rankings', to: 'rankings#index', as: 'rankings'
   get 'static_pages/top'
   root 'static_pages#top'

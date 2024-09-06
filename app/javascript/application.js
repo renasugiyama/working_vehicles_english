@@ -10,3 +10,4 @@ import "./controllers"
 import "./menu"
 import "./mypage"
 import "./speak";
+import "./toggle_button";
