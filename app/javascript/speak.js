@@ -30,4 +30,3 @@ function speakAllText() {
 
 // グローバルスコープに関数を登録
 window.speakAllText = speakAllText;
-ja

@@ -64,6 +64,9 @@ Rails.application.configure do
   config.assets.compile = true
   config.web_console.whitelisted_ips = '192.168.65.0/24'
 
+  # ログレベルをデバッグに設定
+  config.log_level = :debug
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 

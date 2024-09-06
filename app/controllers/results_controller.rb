@@ -62,6 +62,9 @@ class ResultsController < ApplicationController
       redirect_to root_path and return
     end
 
+    # 正解・不正解の処理の後で `check_answer` を呼び出す
+    check_answer(@choice.is_correct)
+
     if @choice.is_correct
       session[:current_question_id] = nil  # セッションをクリア
       redirect_to correct_results_path
@@ -79,6 +82,52 @@ class ResultsController < ApplicationController
       render 'correct'
     else
       render 'incorrect'
+    end
+  end
+
+  def check_answer(correct)
+    player ||= current_user.players.find_by(id: session[:current_player_id])
+
+    if correct
+      # 正解時のインクリメント
+      player.increment!(:correct_streak)
+      player.increment!(:total_correct_count)
+      player.increment!(:total_answers)
+      player.update(incorrect_streak: 0) # 連続不正解数リセット
+    else
+      # 不正解時の処理
+      player.update(correct_streak: 0) # 連続正解数リセット
+      player.increment!(:incorrect_streak)
+      player.increment!(:total_answers)
+    end
+  
+    # プレイ頻度の更新
+    update_play_frequency(player)
+  
+    # リワードの付与チェック
+    check_rewards(player)
+  end
+
+  private
+
+  # プレイ頻度の更新メソッド
+  def update_play_frequency(player)
+    # 最後にプレイした日付が今日より前であれば、連続日数をインクリメント
+    if player.last_played_at.nil? || player.last_played_at.to_date < Date.today
+      player.increment!(:daily_play_count)
+      player.update(last_played_at: Time.current)
+    else
+      player.update(last_played_at: Time.current) # 今日すでにプレイしている場合は日付のみ更新
+    end
+  end
+
+  # リワードのチェックメソッド
+  def check_rewards(player)
+    Reward.all.each do |reward|
+      if reward.achieved?(player) && !player.rewards.include?(reward)
+        player.rewards << reward
+        flash[:notice] = "リワードを獲得しました！"
+      end
     end
   end
 end

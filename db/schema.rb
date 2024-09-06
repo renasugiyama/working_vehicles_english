@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_29_021345) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_06_060025) do
   create_table "choices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "question_id", null: false
     t.text "content"
@@ -18,6 +18,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_021345) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_choices_on_question_id"
+  end
+
+  create_table "player_rewards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "reward_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_player_rewards_on_player_id"
+    t.index ["reward_id"], name: "index_player_rewards_on_reward_id"
   end
 
   create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -30,6 +39,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_021345) do
     t.datetime "updated_at", null: false
     t.integer "correct_count"
     t.integer "incorrect_count"
+    t.integer "correct_streak", default: 0
+    t.integer "total_correct_count", default: 0
+    t.integer "total_answers", default: 0
+    t.integer "incorrect_streak", default: 0
+    t.integer "daily_play_count", default: 0
+    t.datetime "last_played_at"
     t.index ["user_id"], name: "index_players_on_user_id"
   end
 
@@ -50,6 +65,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_021345) do
     t.index ["choice_id"], name: "index_results_on_choice_id"
     t.index ["player_id"], name: "index_results_on_player_id"
     t.index ["question_id"], name: "index_results_on_question_id"
+  end
+
+  create_table "rewards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "icon"
+    t.string "condition_type"
+    t.integer "condition_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -73,6 +98,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_021345) do
   end
 
   add_foreign_key "choices", "questions"
+  add_foreign_key "player_rewards", "players"
+  add_foreign_key "player_rewards", "rewards"
   add_foreign_key "players", "users"
   add_foreign_key "results", "choices"
   add_foreign_key "results", "players"

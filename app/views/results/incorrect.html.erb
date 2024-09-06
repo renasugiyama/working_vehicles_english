@@ -9,3 +9,17 @@
     </div>
   </div>
 </div>
+
+<!-- 音声ファイルのパスを指定 -->
+<audio id="correct-sound" src="/不正解2.mp3" preload="auto"></audio>
+
+<script>
+    // 音を再生する関数
+    function playCorrectSound() {
+        const audio = document.getElementById('correct-sound');
+        audio.play();
+    }
+
+    // ページがロードされたときに音を再生
+    window.onload = playCorrectSound;
+</script>
