@@ -1,8 +1,8 @@
-<h1 class="text-2xl text-center font-bold mb-4 px-4 py-4">リワード一覧</h1>
+<h1 class="text-2xl text-center font-bold mb-4 px-4 py-4"><%= @player.nickname %>のリワード一覧</h1>
 <ul class="grid grid-cols-2 md:grid-cols-3 px-8 py-8 lg:grid-cols-3 gap-6 px-8 py-8">
   <% @rewards.each do |reward_info| %>
     <li class="flex flex-col items-center bg-white p-4 px-4 py-4 rounded-lg shadow-lg">
-      <%= image_tag reward_info[:icon], alt: reward_info[:reward].title, class: "w-24 h-24 mb-2 object-cover rounded-md" %>
+    <%= image_tag reward_info[:icon], alt: reward_info[:reward].title, class: "w-24 h-24 mb-2 object-cover rounded-md" %>
       <strong class="text-center text-lg font-semibold mb-1"><%= reward_info[:reward].title %></strong>
       <p class="text-sm text-gray-600 mb-2"><%= reward_info[:reward].description %></p>
       <% if reward_info[:achieved] %>

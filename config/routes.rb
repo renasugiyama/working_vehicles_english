@@ -41,11 +41,14 @@ Rails.application.routes.draw do
   resources :players, only: [:create, :update, :destroy] do
     member do
       post 'switch'  # プレイヤーを切り替えるアクション
+      get :rewards, to: 'rewards#player_rewards', as: :rewards # rewards/players はすべてのプレイヤーの一覧を表示するためのページ
     end
     collection do
       get 'switch'  # プレイヤー選択ページの表示
     end
   end
+
+  get 'rewards/players', to: 'rewards#players', as: :reward_players # players/:id/rewards は指定したプレイヤーのRewardページ
 
   get 'players/player_mypage', to: 'players#player_mypage', as: 'player_mypage_players'
 
