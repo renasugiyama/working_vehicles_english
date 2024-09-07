@@ -1,0 +1,15 @@
+<h1 class="text-2xl text-center font-bold mb-4 px-4 py-4">プレイヤー一覧</h1>
+<div class="max-w-xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 px-8 py-8">
+  <% @players.each do |player| %>
+    <%= link_to rewards_player_path(player), class: "flex flex-col items-center bg-white p-4 rounded-lg shadow-lg hover:scale-105 shadow-xl transition-shadow duration-300" do %>
+      <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-2 overflow-hidden">
+        <% if player.player_image.present? %>
+          <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+        <% else %>
+          <span class="text-gray-600 text-sm"><%= player.nickname %></span>
+        <% end %>
+      </div>
+      <strong class="text-center text-lg font-semibold"><%= player.nickname %></strong>
+    <% end %>
+  <% end %>
+</div>
