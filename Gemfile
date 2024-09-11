@@ -47,7 +47,9 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'sorcery'
+gem 'sorcery', '~> 0.17', require: 'sorcery'
+gem 'oauth2'
+gem 'googleauth'
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'carrierwave', '~> 2.0'
 gem 'enum_help'

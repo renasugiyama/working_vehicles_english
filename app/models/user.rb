@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :players, dependent: :destroy
   accepts_nested_attributes_for :players, allow_destroy: true
 
+  has_many :authentications, :dependent => :destroy
+  accepts_nested_attributes_for :authentications
+
   enum role: { user: 0, admin: 1 }
 
   before_update :prevent_role_change, if: :admin?

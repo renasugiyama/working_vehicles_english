@@ -18,6 +18,13 @@ Rails.application.routes.draw do
   delete 'logout', to: 'user_sessions#destroy'
   get 'setting', to: 'users#setting', as: :user_setting
 
+  # OAuthのコールバックルート
+  post "/oauth/callback/:provider" => "oauths#callback", as: :oauth_callback
+  get "/oauth/callback/:provider" => "oauths#callback"  # GETリクエストの対応
+
+  # プロバイダーに合わせたOAuth認証ルート
+  get "/oauth/:provider" => "oauths#oauth", as: :auth_at_provider
+
   resources :password_resets, only: %i[new create edit update]
 
   resources :questions, only: [:index, :show, :new, :create, :edit, :update, :destroy]
