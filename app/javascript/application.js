@@ -11,3 +11,5 @@ import "./menu"
 import "./mypage"
 import "./speak";
 import "./toggle_button";
+import "./google_login";
+import './toggle_register_button';

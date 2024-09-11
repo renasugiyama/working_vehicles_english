@@ -16,7 +16,7 @@
         <% elsif @user.user_image.is_a?(ActionDispatch::Http::UploadedFile) %>
           <!-- アップロード中のファイルを表示しない -->
         <% else %>
-          <span class="text-sm"><%= @user.name %></span>
+          <span class="flex items-center justify-center w-full h-full text-sm text-center"><%= @user.name %></span>
         <% end %>
       </div>
       

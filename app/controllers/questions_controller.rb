@@ -9,11 +9,11 @@ class QuestionsController < ApplicationController
 
   def random
     if session[:current_question_id]
-      @question = Question.find(session[:current_question_id])
+      @question = Question.find_by(id: session[:current_question_id])
     else
       displayed_question_ids = session[:displayed_question_ids] || []
       available_questions = Question.where.not(id: displayed_question_ids)
-      
+  
       if available_questions.exists?
         @question = available_questions.order("RAND()").first
       else
@@ -21,12 +21,17 @@ class QuestionsController < ApplicationController
         session[:displayed_question_ids] = []
         @question = Question.order("RAND()").first
       end
-  
-      session[:displayed_question_ids] ||= []
-      session[:displayed_question_ids] << @question.id
     end
   
-    @choices = @question.choices
+    # @questionがnilでないかチェック
+    if @question
+      session[:displayed_question_ids] ||= []
+      session[:displayed_question_ids] << @question.id
+      @choices = @question.choices
+    else
+      # @questionがnilの場合の処理を追加
+      redirect_to root_path, alert: "質問が見つかりませんでした。"
+    end
   end
 
   def new
