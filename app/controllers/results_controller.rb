@@ -3,12 +3,12 @@ class ResultsController < ApplicationController
 
   def index
     @player = current_user.players.find_by(id: session[:current_player_id])
-    @results = @player.results  # プレイヤーに関連する全ての結果を取得
+    @results = @player.results.page(params[:page]).per(10)  # プレイヤーに関連する全ての結果を取得
   end
 
   def show
     @player = current_user.players.find_by(id: session[:current_player_id])
-    @result = @player.results.find(params[:id])  # URLから特定の結果を取得
+    @result = @player.results.find(params[:id]).per(10)  # URLから特定の結果を取得
   end
 
   def correct
