@@ -45,6 +45,7 @@
       <div class="mt-4 flex justify-left">
         <%= link_to 'Create new question', new_question_path, class: "text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-sm" %>
       </div>
+      <%= paginate @questions %>
     </div>
   </div>
 </div>

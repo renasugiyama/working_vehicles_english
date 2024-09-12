@@ -68,7 +68,7 @@ class QuestionsController < ApplicationController
   end
 
   def index
-    @questions = Question.all
+    @questions = Question.page(params[:page]).per(10) # 1ページあたり10件表示
   end
 
   # プレイヤーが設定されているか確認するメソッド
