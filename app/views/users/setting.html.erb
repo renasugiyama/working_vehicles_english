@@ -41,7 +41,7 @@
         <span class="text-sm font-medium">ユーザー削除</span>
       <% end %>
 
-      <!-- アワード -->
+      <!-- リワード -->
       <%= link_to reward_players_path, class: "bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:shadow-lg transition-transform transform hover:scale-105" do %>
         <svg class="h-8 w-8 mb-2 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="8" r="7" />
@@ -50,15 +50,13 @@
         <span class="text-sm font-medium">アワード</span>
       <% end %>
 
-      <!-- 音声切替 -->
-      <%= link_to '#', class: "bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:shadow-lg transition-transform transform hover:scale-105" do %>
-        <svg class="h-8 w-8 mb-2 text-gray-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" />
-          <path d="M15 8a5 5 0 0 1 0 8" />
-          <path d="M17.7 5a9 9 0 0 1 0 14" />
-          <path d="M6 15 h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" />
+      <!-- 連続正解時の動画表示設定 -->
+      <%= link_to new_player_video_setting_path, class: "bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:shadow-lg transition-transform transform hover:scale-105" do %>
+        <svg class="h-8 w-8 mb-2 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+          <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
         </svg>
-        <span class="text-sm font-medium">音声切替</span>
+        <span class="text-sm font-medium">動画表示設定</span>
       <% end %>
     </div>
   </div>

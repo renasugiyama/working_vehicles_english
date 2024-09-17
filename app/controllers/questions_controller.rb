@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
   def show; end
 
   def random
+    @player = current_user.players.find_by(id: session[:current_player_id])
+
     if session[:current_question_id]
       @question = Question.find_by(id: session[:current_question_id])
     else

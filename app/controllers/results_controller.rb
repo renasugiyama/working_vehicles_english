@@ -16,6 +16,26 @@ class ResultsController < ApplicationController
 
     if @player
       @player.increment!(:correct_count)
+
+      # 現在の correct_streak が max_streak を超えている場合、max_streak を更新
+      if @player.correct_streak > @player.max_streak
+        @player.update(max_streak: @player.correct_streak)
+      end
+
+      # プレイヤーに適した設定を取得
+      setting = PlayerVideoSetting.get_setting_for(@player)
+
+      # エラーハンドリング: settingが存在しない場合はデフォルト値を利用
+      play_video_after_correct_count = setting.play_video_after_correct_count || 0
+
+      # 保護者の設定に応じて動画再生フラグを更新
+      if play_video_after_correct_count > 0 && @player.correct_streak == play_video_after_correct_count
+        @player.update(can_play_video: true, correct_streak: 0) # 正解数が条件に達した場合のみリセット
+        redirect_to play_video_prompt_results_path and return
+      end
+    else
+      flash[:alert] = "プレイヤーが見つかりません。"
+      redirect_to root_path
     end
   end
 
@@ -26,7 +46,7 @@ class ResultsController < ApplicationController
       @player.increment!(:incorrect_count)
     end
   end
-  
+
   def check
     # ログインしていない場合はゲスト用の処理へ
     unless logged_in?
@@ -86,7 +106,7 @@ class ResultsController < ApplicationController
   end
 
   def check_answer(correct)
-    player ||= current_user.players.find_by(id: session[:current_player_id])
+    player = current_user.players.find_by(id: session[:current_player_id])
 
     if correct
       # 正解時のインクリメント
@@ -94,6 +114,12 @@ class ResultsController < ApplicationController
       player.increment!(:total_correct_count)
       player.increment!(:total_answers)
       player.update(incorrect_streak: 0) # 連続不正解数リセット
+
+      # スコープを使用して条件を簡潔に
+      if Player.eligible_for_video.exists?(id: player.id)
+        player.update(can_play_video: true)
+      end
+
     else
       # 不正解時の処理
       player.update(correct_streak: 0) # 連続正解数リセット
@@ -106,6 +132,46 @@ class ResultsController < ApplicationController
   
     # リワードの付与チェック
     check_rewards(player)
+  end
+
+  # 20問連続正解のメッセージを表示するアクション
+  def play_video_prompt
+    @player = current_user.players.find_by(id: session[:current_player_id])
+  end
+
+  def play_video
+    @player = current_user.players.find_by(id: session[:current_player_id])
+
+    # プレイヤー情報の有無チェックと再生権限のチェック
+    if @player.nil? || !@player.can_play_video
+      flash[:alert] = "動画再生の権限がありません。"
+      redirect_to root_path and return
+    end
+
+    # 動画再生権限を使用後にフラグをリセット
+    session[:video_played] ||= false
+    if session[:video_played]
+      session.delete(:video_played) # リロードでリセット
+    else
+      session[:video_played] = true
+      @player.update(can_play_video: false)
+    end
+
+    # 再生のトラッキングを保存
+    VideoPlayback.create(player: @player, played_at: Time.current)
+
+    # 直接play_video.html.erbを表示
+    render :play_video
+  end
+
+  def reset_flag
+    @player = current_user.players.find_by(id: session[:current_player_id])
+    if @player
+      @player.update(can_play_video: false)
+      render json: { message: 'Flag reset successfully' }, status: :ok
+    else
+      render json: { error: 'Player not found' }, status: :unprocessable_entity
+    end
   end
 
   private

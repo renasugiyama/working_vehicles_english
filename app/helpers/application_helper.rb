@@ -24,4 +24,10 @@ module ApplicationHelper
   def current_player
     @current_player ||= current_user.players.find_by(id: session[:current_player_id])
   end
+
+  def display_video_setting_label(setting_value)
+    # VIDEO_SETTINGS_OPTIONS から設定値に対応するラベルを見つける
+    option = VIDEO_SETTINGS_OPTIONS.find { |label, value| value == setting_value }
+    option ? option.first : '不明な設定'
+  end
 end

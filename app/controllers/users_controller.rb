@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       auto_login(@user)  # 新しいユーザーを自動的にログインさせる
-      redirect_to switch_players_path, notice: 'ユーザー登録が完了しました。プレイヤーを作成して、ゲームをスタートしてください'
+      redirect_to switch_players_path, notice: 'ユーザー登録が完了しました。プレイヤーを作成して、ゲームをスタートしてください。また、設定リンクから各プレイヤーの動画再生設定が可能です。'
     else
       flash.now[:alert] = 'ユーザー登録に失敗しました'
       flash.now[:errors] = @user.errors.full_messages

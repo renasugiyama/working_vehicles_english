@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  player: one
+  play_video_after_correct_count: 1
+
+two:
+  player: two
+  play_video_after_correct_count: 1

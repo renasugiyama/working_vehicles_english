@@ -1,0 +1,95 @@
+<!-- app/views/player_video_settings/new.html.erb -->
+<div class="flex items-center justify-center h-screen bg-white p-6">
+  <div class="max-w-lg w-full bg-white p-6 rounded-lg">
+    <h1 class="text-2xl font-bold text-gray-800 mb-3">動画再生設定</h1>
+    <span class="text-xs text-gray-500">問題に連続して正解すると、特典として3~5分程のYouTube動画を再生できる機能があります。デフォルト設定は「動画を再生しない」になっており、選択に応じて動画の再生タイミングを調整できます。必要に応じて設定を変更してください。</span>
+
+    <%= form_with model: @player_video_setting, local: true, data: { turbo: false } do |f| %>
+      <%= f.hidden_field :player_id, id: "selected-player-id", name: "player_video_setting[player_id]" %>
+      <!-- 動画再生条件の値を保持する隠しフィールド -->
+      <%= f.hidden_field :play_video_after_correct_count, id: "selected-condition-value", value: "", name: "player_video_setting[play_video_after_correct_count]" %>    
+      <%= f.hidden_field :is_global, value: 'false' %>
+      <div class="mb-6">
+        <label for="player_id" class="block text-sm font-medium text-gray-700 mt-6">プレイヤーを選択:</label>
+        <div class="relative mt-2">
+          <button type="button" id="player-select-button" class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="player-select-label">
+            <span class="flex items-center" id="selected-player-display">
+              <span class="ml-3 block truncate text-gray-500">プレイヤーを選択してください</span>
+            </span>
+          </button>
+          <ul id="player-options" class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm hidden" tabindex="-1" role="listbox" aria-labelledby="player-select-label">
+            <% current_user.players.each_with_index do |player, index| %>
+              <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-indigo-100" role="option" data-player-id="<%= player.id %>" data-player-name="<%= player.nickname %>" data-player-image="<%= player.player_image.url if player.player_image.present? %>" id="player-option-<%= index %>">
+                <div class="flex items-center">
+                  <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center ml-4 overflow-hidden">
+                    <% if player.player_image.present? %>
+                      <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+                    <% else %>
+                      <span><%= player.nickname %></span>
+                    <% end %>
+                  </div>
+                  <span class="ml-3 block truncate font-normal"><%= player.nickname %></span>
+                </div>
+                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 hidden check-icon">
+                  <svg class="h-8 w-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z"/>
+                    <path d="M5 12l5 5l10 -10" />
+                  </svg>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="play_video_after_correct_count" class="block text-sm font-medium text-gray-700">動画再生の条件を選択:</label>
+        <div class="relative mt-2">
+          <button type="button" id="condition-select-button" class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="condition-select-label">
+            <span class="flex items-center" id="selected-condition-display">
+              <span class="ml-3 block truncate">条件を選択してください</span>
+            </span>
+          </button>
+          <ul id="condition-options" class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm hidden" tabindex="-1" role="listbox" aria-labelledby="condition-select-label">
+            <% VIDEO_SETTINGS_OPTIONS.each_with_index do |(label, value), index| %>
+              <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-indigo-100" role="option" data-condition-value="<%= value %>" data-condition-label="<%= label %>" id="condition-option-<%= index %>">
+                <div class="flex items-center">
+                  <span class="ml-3 block truncate font-normal"><%= label %></span>
+                </div>
+                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 hidden check-icon">
+                  <svg class="h-8 w-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z"/>
+                    <path d="M5 12l5 5l10 -10" />
+                  </svg>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :is_global, "全プレイヤー共通の設定", class: "block text-sm font-medium text-gray-700" %>
+        <div class="flex items-center mt-2">
+        <%= f.check_box :is_global, { name: "player_video_setting[is_global]", class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" }, true, false %>
+          <span class="ml-2 text-xs text-gray-500">このオプションを選択すると、すべてのプレイヤーにこの設定が適用されます。プレイヤーごとの個別設定を行いたい場合は、このチェックを外して個別に設定を行ってください。</span>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <%= f.submit "設定を保存", class: "px-4 py-2 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  /* カーソルが置かれたプレイヤーの背景色 */
+  .hover\:bg-indigo-100:hover {
+    background-color: #ebf4ff;
+  }
+
+  /* 全体の幅を調整するために最大幅を設定 */
+  .max-w-lg {
+    max-width: 32rem; /* 約512px */
+  }
+</style>

@@ -2,7 +2,8 @@ class MypagesController < ApplicationController
   before_action :set_user, only: [:display, :edit, :update, :reset_player_image]
 
   def display
-    @players = @user.players
+    @user = current_user
+    @players = @user.players.includes(:player_video_setting) # プレイヤーと再生設定を一緒に取得
   end
 
   def edit

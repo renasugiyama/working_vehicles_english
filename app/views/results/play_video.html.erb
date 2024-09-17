@@ -1,0 +1,128 @@
+<div class="container mx-auto items-center justify-between py-2" id="message-container">
+  <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mt-2" role="alert">
+    <div class="flex items-center">
+      <svg class="h-6 w-6 mr-4 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+      </svg>
+      <div>
+        <p class="font-bold">動画の特典について</p>
+        <p>10回連続正解の特典です!一度しか再生できませんので、リロードは行わないようご注意ください。</p>
+        <p>動画は自動的に再生され、再生が終わると非表示になります。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="flex justify-center">
+  <div class="mx-auto bg-white mt-2">
+    <div class="relative" style="width: 853px; height:480px;" id="player-container">
+      <div id="player" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-center mx-auto mt-4 space-x-4" id="button-container">
+  <%= link_to 'ゲームに戻る', random_question_path, class: "bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" %>
+  <%= link_to 'トップページに戻る', root_path, class: "bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" %>
+</div>
+
+<!-- YouTube IFrame Player API のスクリプトを読み込む -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  // 動画IDと再生開始・終了位置の設定
+  const videos = {
+    '14NlFvat7C0': { start: 0, end: 89 }, // 動画1
+    'RI6UT82cB_E': { start: 4, end: 170 },  // 動画2
+    'GzrjwOQpAl0': { start: 0, end: 145 }, // 動画3
+    'qPo37Dm81F8': { start: 13, end: 139 }, // 動画4
+    'qAeeeEUXRnE': { start: 9, end: 206 },  // 動画5
+    'C1XDgrVk5KQ': { start: 8, end: 155 }, // 動画6
+    '_Tr9Ncoo-yw': { start: 8, end: 169 },  // 動画7
+    'ChDvB6NqeS8': { start: 0, end: 123 },  // 動画8
+    'oUNEZ6kM8sc': { start: 9, end: 142},  // 動画9
+    'jKi2SvWOCXc': { start: 0, end: 218},  // 動画10
+    'hRdkmwuv13s': { start: 9, end: 286},  // 動画11
+    'SLy8ZnH6HZA': { start: 9, end: 298},  // 動画12
+    'ojCfEbTF808': { start: 5, end: 205},  // 動画13
+    'bMi41CoQw_Y': { start: 9, end: 280},  // 動画14
+    '9JpzXHj8SJI': { start: 9, end: 261},  // 動画15
+    '74WvdVNgUSc': { start: 9, end: 287},  // 動画16
+    'M4XQ1uAPf1o': { start: 7, end: 221},  // 動画17
+    'S6ozbWtOgAI': { start: 7, end: 283},  // 動画18
+    'Qo2yscGo6OY': { start: 7, end: 290}  // 動画19
+  };
+
+  // ランダムに動画IDを選択する関数
+  function getRandomVideoKey() {
+    const keys = Object.keys(videos);
+    return keys[Math.floor(Math.random() * keys.length)];
+  }
+
+  // YouTube プレーヤーオブジェクトを格納する変数
+  let player;
+  let selectedVideoKey = getRandomVideoKey(); // 選択された動画ID
+
+  // YouTube IFrame API の準備ができたら呼び出される関数
+  function onYouTubeIframeAPIReady() {
+    // 選択された動画の再生位置を取得
+    const start = videos[selectedVideoKey].start;
+    const end = videos[selectedVideoKey].end;
+
+    // YouTube プレーヤーの設定
+    player = new YT.Player('player', {
+      width: '853', // プレーヤーの幅
+      height: '480', // プレーヤーの高さ
+      videoId: selectedVideoKey, // ランダムに選ばれた動画IDを使用
+      playerVars: {
+        controls: 0, // プレイヤーのコントロールを非表示
+        fs: 0, // 全画面表示ボタンを非表示
+        modestbranding: 1, // YouTubeロゴを非表示
+        rel: 0, // 関連動画を非表示
+        showinfo: 0, // 動画の情報を非表示
+        disablekb: 1, // キーボード操作を無効化
+        autoplay: 1, // 自動再生を有効化
+        iv_load_policy: 3, // アノテーションを非表示
+        cc_load_policy: 0, // 字幕を非表示
+        enablejsapi: 1, // JavaScript APIを有効にする
+        start: start, // 動画の再生開始位置
+        end: end // 動画の再生終了位置
+      },
+      events: {
+        'onReady': onPlayerReady, // プレーヤーの準備ができたときに呼ばれる関数
+        'onStateChange': onPlayerStateChange // プレーヤーの状態が変わったときに呼ばれる関数
+      }
+    });
+  }
+
+  // プレーヤーの準備ができたときに呼び出される関数
+  function onPlayerReady(event) {
+    // 動画を自動再生
+    event.target.playVideo();
+  }
+
+  // プレーヤーの状態が変わったときに呼び出される関数
+  function onPlayerStateChange(event) {
+    // 動画が終了したとき（ENDED 状態）の処理
+    if (event.data === YT.PlayerState.ENDED) {
+      // プレーヤーを非表示にする
+      document.getElementById('player-container').style.display = 'none';
+      document.getElementById('message-container').style.display = 'none';
+
+      // ボタンコンテナを表示し、中央に配置するクラスを追加
+      const buttonContainer = document.getElementById('button-container');
+      buttonContainer.style.display = 'flex';
+      buttonContainer.classList.add(
+        'fixed', 
+        'inset-x-0', 
+        'bottom-1/2', 
+        'flex', 
+        'items-center', 
+        'justify-center', 
+        'space-x-4', 
+        'flex-row'
+      );
+    }
+  }
+</script>

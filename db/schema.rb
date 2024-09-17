@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_10_064920) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_15_142000) do
   create_table "authentications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "provider", null: false
@@ -38,6 +38,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_064920) do
     t.index ["reward_id"], name: "index_player_rewards_on_reward_id"
   end
 
+  create_table "player_video_settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.integer "play_video_after_correct_count", default: 0
+    t.boolean "is_global"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_player_video_settings_on_player_id"
+  end
+
   create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "nickname"
     t.date "birth_date"
@@ -54,6 +63,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_064920) do
     t.integer "incorrect_streak", default: 0
     t.integer "daily_play_count", default: 0
     t.datetime "last_played_at"
+    t.boolean "can_play_video", default: false
+    t.integer "max_streak", default: 0
     t.index ["user_id"], name: "index_players_on_user_id"
   end
 
@@ -106,11 +117,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_064920) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
   end
 
+  create_table "video_playbacks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.datetime "played_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_video_playbacks_on_player_id"
+  end
+
   add_foreign_key "choices", "questions"
   add_foreign_key "player_rewards", "players"
   add_foreign_key "player_rewards", "rewards"
+  add_foreign_key "player_video_settings", "players"
   add_foreign_key "players", "users"
   add_foreign_key "results", "choices"
   add_foreign_key "results", "players"
   add_foreign_key "results", "questions"
+  add_foreign_key "video_playbacks", "players"
 end
