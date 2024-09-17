@@ -31,11 +31,19 @@ Rails.application.routes.draw do
   get 'random_question', to: 'questions#random', as: 'random_question'
 
   resources :results, only: [] do
+    get :play_video_prompt, on: :collection
+    get :play_video, on: :collection
     member do
       get 'check'
       get :guest_check
     end
   end
+
+  resources :player_video_settings
+
+  post 'reset_flag', to: 'results#reset_flag'
+
+  resources :videos, only: [:show]
   
   resources :mypages, only: [:edit, :update, :show, :destroy] do
     resources :players, only: [:new, :create, :edit, :update, :destroy, :show]

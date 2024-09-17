@@ -10,12 +10,12 @@ document.addEventListener('turbo:load', function() {
 
   // ボタンの状態を切り替える関数
   function toggleRegisterButton() {
-    const isTermsChecked = termsCheckbox.checked;
-    const isPrivacyChecked = privacyCheckbox.checked;
-    const isNameFilled = nameInput.value.trim() !== '';
-    const isEmailFilled = emailInput.value.trim() !== '';
-    const isPasswordFilled = passwordInput.value.trim() !== '';
-    const isPasswordConfirmationFilled = passwordConfirmationInput.value.trim() !== '';
+    const isTermsChecked = termsCheckbox ? termsCheckbox.checked : false;
+    const isPrivacyChecked = privacyCheckbox ? privacyCheckbox.checked : false;
+    const isNameFilled = nameInput ? nameInput.value.trim() !== '' : false;
+    const isEmailFilled = emailInput ? emailInput.value.trim() !== '' : false;
+    const isPasswordFilled = passwordInput ? passwordInput.value.trim() !== '' : false;
+    const isPasswordConfirmationFilled = passwordConfirmationInput ? passwordConfirmationInput.value.trim() !== '' : false;
 
     // すべての条件が満たされている場合、ボタンを有効化
     if (
