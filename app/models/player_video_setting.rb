@@ -24,7 +24,7 @@ class PlayerVideoSetting < ApplicationRecord
   # 一括設定とプレイヤーごとの設定を区別し、同時適用を防ぐバリデーション
   def validate_global_and_player_settings
     if is_global && player_id.present?
-      errors.add(:base, "プレイヤーごとの設定と全プレイヤー共通の設定を同時に適用することはできません。プレイヤー毎の設定の場合は、全プレイヤー共通の設定のチェックを外してください。")
+      errors.add(:base, "プレイヤーごとの設定と全プレイヤー共通の設定を同時に適用することはできません。<br>プレイヤー毎の設定の場合は、全プレイヤー共通の設定のチェックを外してください。")
     elsif player_id.nil? && !is_global
       errors.add(:base, "プレイヤーを選択するか、全プレイヤー共通の設定にチェックを入れてください。")
     end
