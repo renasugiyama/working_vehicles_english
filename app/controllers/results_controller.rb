@@ -4,6 +4,7 @@ class ResultsController < ApplicationController
   def index
     @player = current_user.players.find_by(id: session[:current_player_id])
     @results = @player.results.page(params[:page]).per(10)  # プレイヤーに関連する全ての結果を取得
+    @all_results = @player.results  # ページネーションなしで全ての結果を取得
   end
 
   def show

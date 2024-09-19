@@ -1,3 +1,4 @@
+// app/javascript/application.js
 // Require Rails UJS for handling method: :delete in link_to helpers
 import Rails from "@rails/ujs"
 Rails.start()
