@@ -1,13 +1,15 @@
-<div class="mypage-container pt-32 max-w-xl mx-auto">
+<div class="mypage-container max-w-md mx-auto">
+  <!-- ユーザーページヘッダーやユーザー情報など -->
   <div class="header flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">ユーザーページ</h1>
+    <h1 class="text-2xl font-bold mt-6">ユーザーページ</h1>
     <%= link_to edit_mypage_path(current_user), class: "btn btn-primary flex items-center justify-center w-8 h-8 bg-transparent border-none" do %>
-      <svg class="h-8 w-8 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="h-8 w-8 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="CurrentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
     <% end %>
   </div>
 
+  <!-- ユーザー情報 -->
   <div class="user-info mt-6 p-4 bg-gray-300 rounded-lg flex items-center">
     <div class="user-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
       <% if @user.user_image.is_a?(CarrierWave::Uploader::Base) && @user.user_image.file.present? %>
@@ -21,34 +23,56 @@
       <p class="text-sm text-gray-600"><%= current_user.email %></p>
     </div>
   </div>
+</div>
 
-  <div class="players-info mt-6">
-    <h2 class="text-xl font-semibold flex items-center">
-      <span class="material-icons mr-2">👤</span>プレイヤープロフィール
-    </h2>
-    <% if @players.present? %>
-      <% @players.each do |player| %>
-        <% player_setting = PlayerVideoSetting.for_player(player) %>
-        <div class="player-card p-4 bg-gray-100 rounded-lg mt-4 flex items-center">
-          <div class="player-details flex-grow">
-            <p class="font-semibold">名前: <%= player.nickname %></p>
-            <p class="text-gray-600">誕生年月: <%= player.birth_date.present? ? player.birth_date.strftime('%Y年%m月') : 'unknown' %></p>
-            <p class="text-gray-600">性別: <%= player.gender == 'male' ? '男' : '女' %></p>
-            <p class="text-gray-600">獲得ポイント: <%= player.correct_count.to_i - player.incorrect_count.to_i %></p>
-            <p class="text-gray-600">動画再生設定: <%= display_video_setting_label(player_setting.play_video_after_correct_count) %></p>
-            <!-- プレイヤーの再生設定を表示 -->
-          </div>
-          <div class="player-icon w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center ml-4 overflow-hidden">
-            <% if player.player_image.present? %>
-              <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
-            <% else %>
-              <span><%= player.nickname %></span>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p>プレイヤーが存在しません</p>
-    <% end %>
+<div class="player-container max-w-md mx-auto">
+  <div class="header flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold mt-6">プレイヤー</h1>
   </div>
+</div>
+
+<!-- スライダーの外にナビゲーションボタンを配置 -->
+<div class="flex justify-between items-center relative max-w-md mx-auto">
+  <div class="swiper-button-prev cursor-pointer w-10 h-10 text-black flex justify-center items-center rounded-full"></div>
+
+  <!-- Swiperスライダーのコンテナ -->
+  <div class="swiper-container mx-4 max-w-md overflow-hidden relative">
+    <!-- Swiper Wrapper -->
+    <div class="swiper-wrapper">
+      <% if @players.present? %>
+        <% @players.each do |player| %>
+          <% player_setting = PlayerVideoSetting.for_player(player) %>
+          <!-- Swiper Slide -->
+          <div class="swiper-slide bg-white border-1 border-gray-200 rounded-lg p-6 flex flex-col items-center transition-transform duration-300 transform">
+            <!-- Player Icon -->
+            <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mx-auto">
+              <% if player.player_image.present? %>
+                <%= image_tag player.player_image.url, alt: "プレイヤーアイコン", class: "object-cover w-full h-full" %>
+              <% else %>
+                <span class="text-center text-gray-500"><%= player.nickname %></span>
+              <% end %>
+            </div>
+
+            <!-- Player Details -->
+            <div class="player-details flex flex-col justify-center pl-16">
+              <p class="font-semibold text-lg text-gray-900 mb-2">名前: <%= player.nickname %></p>
+              <p class="text-gray-500 text-sm mb-1">誕生年月: <%= player.birth_date.present? ? player.birth_date.strftime('%Y年%m月') : 'unknown' %></p>
+              <p class="text-gray-500 text-sm mb-1">性別: <%= player.gender == 'male' ? '男' : '女' %></p>
+              <p class="text-gray-500 text-sm mb-1">獲得ポイント: <%= player.correct_count.to_i - player.incorrect_count.to_i %></p>
+              <p class="text-gray-500 text-sm">動画再生設定: <%= display_video_setting_label(player_setting.play_video_after_correct_count) %></p>
+              <p class="text-gray-500 text-sm text-white">___</p>
+            </div>
+          </div>
+          <!-- End Swiper Slide -->
+        <% end %>
+      <% else %>
+        <p>プレイヤーが存在しません</p>
+      <% end %>
+    </div>
+    <!-- End Swiper Wrapper -->
+  </div>
+  <!-- Swiper Pagination -->
+  <div class="swiper-pagination mt-24"></div>
+  
+  <div class="swiper-button-next cursor-pointer w-10 h-10 text-black flex justify-center items-center rounded-full"></div>
 </div>
