@@ -4,6 +4,14 @@ document.addEventListener("turbo:load", initPlayerForm);
 document.addEventListener("turbo:frame-load", initPlayerForm);
 
 function initPlayerForm() {
+  // プレイヤー情報を表示するコンテナを取得
+  const playersInfoContainer = document.querySelector('.players-info');
+  
+  if (!playersInfoContainer) {
+    console.error("playersInfoContainer が見つかりません");
+    return; // コンテナがない場合は処理を中断
+  }
+
   // ユーザー画像のプレビュー機能を初期化
   const userImageInput = document.getElementById("user_image_input");
   if (userImageInput) {

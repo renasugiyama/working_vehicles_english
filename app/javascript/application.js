@@ -14,4 +14,5 @@ import "./speak";
 import "./toggle_button";
 import "./google_login";
 import './toggle_register_button';
-import './player_video_settings'; // 作成したファイルをインポート
+import './player_video_settings';
+import './swiper';
