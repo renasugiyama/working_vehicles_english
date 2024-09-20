@@ -28,19 +28,31 @@ class MypagesController < ApplicationController
     @user = current_user
     @user.remove_user_image!  # CarrierWaveの画像を削除
     if @user.save
-      redirect_to edit_mypage_path(@user)
+      respond_to do |format|
+        format.html { redirect_to edit_mypage_path(@user) }
+        format.js   # JSリクエストに対してJSレスポンスを返す
+      end
     else
-      redirect_to edit_mypage_path(@user), alert: 'プロフィール画像のリセットに失敗しました'
+      respond_to do |format|
+        format.html { redirect_to edit_mypage_path(@user), alert: 'プロフィール画像のリセットに失敗しました' }
+        format.js { render js: "alert('プロフィール画像のリセットに失敗しました');" }
+      end
     end
   end
-
+  
   def reset_player_image
     @player = Player.find(params[:player_id])
     @player.remove_player_image!  # CarrierWaveの画像を削除
     if @player.save
-      redirect_to edit_mypage_path(@user)
+      respond_to do |format|
+        format.html { redirect_to edit_mypage_path(@user) }
+        format.js   # JSリクエストに対してJSレスポンスを返す
+      end
     else
-      redirect_to edit_mypage_path(@user), alert: 'プレイヤー画像のリセットに失敗しました'
+      respond_to do |format|
+        format.html { redirect_to edit_mypage_path(@user), alert: 'プレイヤー画像のリセットに失敗しました' }
+        format.js { render js: "alert('プレイヤー画像のリセットに失敗しました');" }
+      end
     end
   end
 

@@ -29,7 +29,8 @@
         <%= f.label :user_image, "プロフィール画像", for: "user_image_input", class: "text-sm text-gray-600" %>
         <%= f.file_field :user_image, id: "user_image_input", class: "form-control mt-1 block w-full px-2 py-1 border border-gray-100 rounded" %>
 
-        <%= link_to "画像を未設定にする", reset_user_image_mypages_path(id: @user.id), method: :delete, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当に画像をリセットしますか？' } %>
+        <!-- ユーザー画像のリセットリンク -->
+        <%= link_to "画像を未設定にする", reset_user_image_mypages_path(id: @user.id), method: :delete, remote: true, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にユーザー画像を未設定にしますか？' } %>
       </div>
     </div>
 
@@ -42,7 +43,7 @@
       </h2>
 
       <%= f.fields_for :players, @players do |player_fields| %>
-        <div class="player-card mt-6 p-4 bg-gray-100 rounded-lg flex flex-col items-center">
+        <div class="player-card mt-6 p-4 bg-gray-100 rounded-lg flex flex-col items-center" id="player-<%= player_fields.object.id %>">
           <div class="player-details flex-grow">
             <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
               <% if player_fields.object.player_image.present? %>
@@ -71,10 +72,10 @@
               <%= player_fields.label :player_image, "プレイヤー画像", for: "player_image_input", class: "text-sm text-gray-600" %>
               <%= player_fields.file_field :player_image, id: "player_image_input", class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
 
-              <!-- 画像リセットリンク -->
+              <!-- プレイヤー画像リセットリンク -->
               <% if player_fields.object.id.present? %>
-                <%= link_to "画像を未設定にする", reset_player_image_mypages_path(player_id: player_fields.object.id), method: :delete, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にプレイヤー画像をリセットしますか？' } %>
-              <% end %>
+                <%= link_to "画像を未設定にする", reset_player_image_mypages_path(player_id: player_fields.object.id), method: :delete, remote: true, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にプレイヤー画像を未設定にしますか？' } %>
+              <% end %>              
             </div>
 
             <!-- 削除フラグを管理 -->
