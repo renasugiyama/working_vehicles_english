@@ -1,0 +1,11 @@
+// プレイヤー画像を削除した後の処理
+(function() {
+  console.log("Looking for: #player-<%= @player.id %> .player-icon");
+  let playerIconElement = document.querySelector("#player-<%= @player.id %> .player-icon");
+  console.log(playerIconElement);
+  if (playerIconElement) {
+    playerIconElement.innerHTML = '<span class="text-sm nickname-display"><%= @player.nickname %></span>';
+  } else {
+    console.error("Player icon element not found for player ID: <%= @player.id %>");
+  }
+})();

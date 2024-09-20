@@ -1,3 +1,4 @@
+//app/javascript/mypage.js
 document.addEventListener("turbo:render", initPlayerForm);
 document.addEventListener("turbo:load", initPlayerForm);
 document.addEventListener("turbo:frame-load", initPlayerForm);
