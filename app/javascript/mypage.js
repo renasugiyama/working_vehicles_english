@@ -3,9 +3,29 @@ document.addEventListener("turbo:load", initPlayerForm);
 document.addEventListener("turbo:frame-load", initPlayerForm);
 
 function initPlayerForm() {
-  const playersInfoContainer = document.querySelector(".players-info");
+  // ユーザー画像のプレビュー機能を初期化
+  const userImageInput = document.getElementById("user_image_input");
+  if (userImageInput) {
+    userImageInput.addEventListener("change", function(event) {
+      const userIconElement = document.querySelector(".user-icon");
+      if (userIconElement) {
+        previewImage(event, userIconElement);
+      }
+    });
+  }
 
+  // プレイヤー画像のプレビュー機能を初期化
   document.querySelectorAll(".player-card").forEach(function(playerCard) {
+    const playerImageInput = playerCard.querySelector("input[type='file']");
+    if (playerImageInput) {
+      playerImageInput.addEventListener("change", function(event) {
+        const playerIconElement = playerCard.querySelector(".player-icon");
+        if (playerIconElement) {
+          previewImage(event, playerIconElement);
+        }
+      });
+    }
+
     const removeBtn = playerCard.querySelector(".remove-new-player-btn, .remove-player-btn");
     const destroyFlag = playerCard.querySelector(".destroy-flag");
 
@@ -23,6 +43,7 @@ function initPlayerForm() {
     }
   });
 
+  // プレイヤー追加ボタンのイベントリスナー
   const addPlayerBtn = document.getElementById("add-player-btn");
   let playerIndex = document.querySelectorAll(".player-card").length;
 
@@ -53,7 +74,7 @@ function initPlayerForm() {
           </div>
           <div class="form-group mt-4">
             <label class="text-sm text-gray-600">プレイヤー画像</label>
-            <input type="file" name="user[players_attributes][${playerIndex}][player_image]" class="form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" />
+            <input type="file" name="user[players_attributes][${playerIndex}][player_image]" class="form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded player-image-input" />
           </div>
           <input type="hidden" name="user[players_attributes][${playerIndex}][_destroy]" class="destroy-flag" value="0"> <!-- ここで_destroyフィールドを追加 -->
           <button type="button" class="remove-new-player-btn bg-red-500 text-white mt-4 px-3 py-1 rounded">削除</button>
@@ -65,11 +86,31 @@ function initPlayerForm() {
       nicknameInput.addEventListener("input", function() {
         nicknameDisplay.textContent = nicknameInput.value || "新しいプレイヤー";
       });
+
+      playerForm.querySelector(".player-image-input").addEventListener("change", function(event) {
+        const playerIconElement = playerForm.querySelector(".player-icon");
+        if (playerIconElement) {
+          previewImage(event, playerIconElement);
+        }
+      });
+
       playerForm.querySelector(".remove-new-player-btn").addEventListener("click", function() {
         // 新規プレイヤーの場合はフォームを削除
         playerForm.remove();
       });
       playerIndex++;
     });
+  }
+}
+
+// 画像プレビュー表示関数
+function previewImage(event, targetElement) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      targetElement.innerHTML = `<img src="${e.target.result}" alt="プレビュー" class="w-full h-full object-cover">`;
+    };
+    reader.readAsDataURL(file);
   }
 }
