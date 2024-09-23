@@ -3,6 +3,10 @@ class RankingsController < ApplicationController
   before_action :require_login
 
   def index
+    # セッションが存在する場合のみリセット
+    if session[:pin_code_verified].present?
+      session[:pin_code_verified] = nil
+    end
     # すべてのプレイヤーを取得し、正解数と不正解数の差に基づいてソート
     sorted_players = Player.all.sort_by { |player| player.correct_count.to_i - player.incorrect_count.to_i }.reverse
   

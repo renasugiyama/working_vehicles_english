@@ -44,6 +44,12 @@ Rails.application.routes.draw do
   post 'reset_flag', to: 'results#reset_flag'
 
   resources :videos, only: [:show]
+  get 'pin_code', to: 'users#pin_code'
+  post 'validate_pin_code', to: 'users#validate_pin_code'
+  get 'set_pin_code', to: 'users#set_pin_code'
+  post 'create_pin_code', to: 'users#create_pin_code'
+  get 'reset_pin_code', to: 'users#reset_pin_code'
+  post 'update_pin_code', to: 'users#update_pin_code'
   
   resources :mypages, only: [:edit, :update, :show, :destroy] do
     resources :players, only: [:new, :create, :edit, :update, :destroy, :show]

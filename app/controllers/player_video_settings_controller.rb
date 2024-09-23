@@ -1,4 +1,7 @@
 class PlayerVideoSettingsController < ApplicationController
+  before_action :check_pin_code, only: [:index, :new]
+  before_action :authenticate_pin_code, only: [:index, :new]
+
   def new
     @player_video_setting = PlayerVideoSetting.new
   end
@@ -47,6 +50,23 @@ class PlayerVideoSettingsController < ApplicationController
   end
 
   private
+
+  def check_pin_code
+    # ユーザーにPINコードが設定されていない場合はPINコード設定ページにリダイレクト
+    if current_user.pin_code.blank?
+      redirect_to set_pin_code_path, alert: "PINコードを設定しないと動画再生設定を実行できません。保護者の方は、PINコードを設定してください。"
+    end
+  end
+
+  def authenticate_pin_code
+    # PINコードが設定された直後かどうか確認し、セッションがあればスキップ
+    if session[:pin_code_just_set]
+      session[:pin_code_verified] = true
+      session[:pin_code_just_set] = nil  # 一度アクセスしたらリセット
+    elsif !session[:pin_code_verified]
+      redirect_to pin_code_path, alert: "PINコードを入力してください。"
+    end
+  end
 
   # 全体設定を更新するメソッド
   def update_global_settings
