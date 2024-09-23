@@ -18,7 +18,65 @@ class UsersController < ApplicationController
     end
   end
 
-  def setting; end
+  def setting
+    # セッションが存在する場合のみリセット
+    if session[:pin_code_verified].present?
+      session[:pin_code_verified] = nil
+    end
+  end
+
+  def pin_code; end
+  
+  def set_pin_code;  end
+
+  def reset_pin_code; end
+
+  def validate_pin_code
+    # 現在のユーザーのPINコードと照合
+    if current_user.pin_code == params[:pin_code]
+      session[:pin_code_verified] = true # PINコード確認済みフラグを設定
+      Rails.logger.debug("PINコード認証成功: セッションは #{session[:pin_code_verified]}")
+      redirect_to player_video_settings_path, notice: "正しいPINコードが入力されました。"
+    else
+      flash[:alert] = "PINコードが間違っています。"
+      render :pin_code
+    end
+  end
+
+  def create_pin_code
+    # 入力されたメールアドレスと現在のユーザーのメールアドレスを照合
+    if params[:email] == current_user.email
+      if params[:pin_code].present?
+        current_user.update(pin_code: params[:pin_code])
+        # セッションにフラグを設定して、次回のアクセスでPINコードをスキップ
+        session[:pin_code_just_set] = true
+        redirect_to player_video_settings_path, notice: "PINコードが設定されました。"
+      else
+        flash[:alert] = "PINコードを入力してください。"
+        render :set_pin_code
+      end
+    else
+      flash[:alert] = "メールアドレスが一致しません。"
+      render :set_pin_code
+    end
+  end
+
+  def update_pin_code
+    if params[:email] == current_user.email
+      if params[:pin_code].present?
+        current_user.update(pin_code: params[:pin_code])
+        # PINコードを更新した直後は、次回アクセスで確認をスキップ
+        session[:pin_code_just_set] = true
+        redirect_to player_video_settings_path, notice: "PINコードが更新されました。"
+      else
+        flash[:alert] = "PINコードを入力してください。"
+        render :reset_pin_code
+      end
+    else
+      flash[:alert] = "メールアドレスが一致しません。"
+      render :reset_pin_code
+    end
+  end
 
   def destroy
     @user.destroy

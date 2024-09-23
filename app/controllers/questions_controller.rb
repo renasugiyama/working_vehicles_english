@@ -8,7 +8,17 @@ class QuestionsController < ApplicationController
   def show; end
 
   def random
-    @player = current_user.players.find_by(id: session[:current_player_id])
+    # セッションが存在する場合のみリセット
+    if session[:pin_code_verified].present?
+      session[:pin_code_verified] = nil
+    end
+
+    if current_user
+      @player = current_user.players.find_by(id: session[:current_player_id])
+    else
+      # ログインしていないユーザーの場合はプレイヤー情報をスキップ
+      @player = nil
+    end
 
     if session[:current_question_id]
       @question = Question.find_by(id: session[:current_question_id])

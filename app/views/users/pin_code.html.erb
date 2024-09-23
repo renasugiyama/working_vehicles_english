@@ -1,0 +1,23 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-md">
+    <div class="p-6 bg-gray-50">
+      <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">動画再生の設定を実行するには、PINコードの入力が必要です。</h1>
+      <p class="text-sm text-gray-600 mb-4 text-center">PINコードを入力してください。</p>
+      <%= form_with url: validate_pin_code_path, method: :post do |f| %>
+
+        <div class="mb-4">
+          <%= f.label :pin_code, "PINコード", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.password_field :pin_code, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+
+        <!-- 登録ボタン -->
+        <%= f.submit "設定", class: "w-full py-2 px-4 mt-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      <% end %>
+
+      <!-- PINコードを忘れた場合のリンク -->
+      <div class="mt-4 text-center">
+        <%= link_to "PINコードを忘れた場合はこちら", reset_pin_code_path, class: "text-sm text-blue-600 hover:underline" %>
+      </div>
+    </div>
+  </div>
+</div>

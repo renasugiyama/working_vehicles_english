@@ -1,5 +1,10 @@
 class RewardsController < ApplicationController
   def index
+    # セッションが存在する場合のみリセット
+    if session[:pin_code_verified].present?
+      session[:pin_code_verified] = nil
+    end
+
     @current_player ||= current_user.players.find_by(id: session[:current_player_id])
     @rewards = Reward.all.map do |reward|
       achieved = @current_player.rewards.include?(reward)

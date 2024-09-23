@@ -38,62 +38,73 @@
     
     <!-- プレイヤー -->
     <div class="players-info mt-6">
-      <h2 class="text-xl font-semibold flex items-center">
+      <h2 class="text-xl font-semibold flex items-center mb-4">
         <span class="material-icons mr-2">👤</span>プレイヤー
       </h2>
-
-      <%= f.fields_for :players, @players do |player_fields| %>
-        <div class="player-card mt-6 p-4 bg-gray-100 rounded-lg flex flex-col items-center" id="player-<%= player_fields.object.id %>">
-          <div class="player-details flex-grow">
-            <div class="player-icon w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
-              <% if player_fields.object.player_image.present? %>
-                <%= image_tag player_fields.object.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
-              <% else %>
-                <span class="text-sm nickname-display"><%= player_fields.object.nickname || "新しいプレイヤー" %></span>
-              <% end %>
+    
+      <!-- プレイヤーのカードをグリッドレイアウトで並べる -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <%= f.fields_for :players, @players do |player_fields| %>
+          <div class="player-card p-4 bg-gray-100 rounded-lg shadow-md flex flex-col" id="player-<%= player_fields.object.id %>">
+            <!-- プレイヤーアイコン部分 -->
+            <div class="flex items-center mb-4">
+              <div class="player-icon w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 mr-4 flex items-center justify-center overflow-hidden">
+                <% if player_fields.object.player_image.present? %>
+                  <%= image_tag player_fields.object.player_image.url, alt: "プレイヤーアイコン", class: "w-full h-full object-cover" %>
+                <% else %>
+                  <span class="text-sm flex items-center justify-center w-full h-full"><%= player_fields.object.nickname || "新しいプレイヤー" %></span>
+                <% end %>
+              </div>
+          
+    
+              <div>
+                <h3 class="text-lg font-bold"><%= player_fields.object.nickname || "新しいプレイヤー" %></h3>
+                <p class="text-gray-600 text-sm"><%= player_fields.object.gender == "male" ? "男の子" : "女の子" %></p>
+              </div>
             </div>
-
-            <div class="form-group">
-              <%= player_fields.label :nickname, "プレイヤーネーム", class: "text-sm text-gray-600" %>
-              <%= player_fields.text_field :nickname, class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded nickname-input" %>
+    
+            <!-- 入力フォーム部分 -->
+            <div class="player-details">
+              <div class="form-group mb-4">
+                <%= player_fields.label :nickname, "プレイヤーネーム", class: "text-sm text-gray-600" %>
+                <%= player_fields.text_field :nickname, class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
+              </div>
+    
+              <div class="form-group mb-4">
+                <%= player_fields.label :birth_date, "誕生日", class: "text-sm text-gray-600" %>
+                <%= player_fields.date_field :birth_date, class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
+              </div>
+    
+              <div class="form-group mb-4">
+                <%= player_fields.label :gender, "性別", class: "text-sm text-gray-600" %>
+                <%= player_fields.select :gender, options_for_select([['男の子', 'male'], ['女の子', 'female']]), class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
+              </div>
+    
+              <div class="form-group mb-4">
+                <%= player_fields.label :player_image, "プレイヤー画像", for: "player_image_input", class: "text-sm text-gray-600" %>
+                <%= player_fields.file_field :player_image, id: "player_image_input", class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
+    
+                <!-- プレイヤー画像リセットリンク -->
+                <% if player_fields.object.id.present? %>
+                  <%= link_to "画像を未設定にする", reset_player_image_mypages_path(player_id: player_fields.object.id), method: :delete, remote: true, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にプレイヤー画像を未設定にしますか？' } %>
+                <% end %>
+              </div>
+    
+              <!-- 削除フラグを管理 -->
+              <div class="form-group">
+                <% if player_fields.object.id.present? %>
+                  <%= link_to "削除", "#", class: "btn btn-danger bg-red-500 text-white mt-4 px-3 py-1 rounded", onclick: "if(confirm('削除してしまうと今までの記録が全て消えてしまいます。削除してもよろしいでしょうか？')) { this.closest('div.player-card').querySelector('.destroy-flag').value = '1'; this.closest('form').submit(); } return false;" %>
+                  <%= player_fields.hidden_field :_destroy, class: "destroy-flag" %>
+                <% else %>
+                  <button type="button" class="remove-new-player-btn bg-red-500 text-white mt-4 px-3 py-1 rounded">削除</button>
+                <% end %>
+              </div>
             </div>
-
-            <div class="form-group mt-4">
-              <%= player_fields.label :birth_date, "誕生日", class: "text-sm text-gray-600" %>
-              <%= player_fields.date_field :birth_date, class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded" %>
-            </div>
-
-            <div class="form-group mt-4">
-              <%= player_fields.label :gender, "性別", class: "text-sm text-gray-600" %>
-              <%= player_fields.select :gender, options_for_select([['男の子', 'male'], ['女の子', 'female']]), class: "form-control block w-48 px-2 py-1 mt-1 border border-gray-300 rounded" %>
-            </div>
-
-            <div class="form-group mt-4">
-              <%= player_fields.label :player_image, "プレイヤー画像", for: "player_image_input", class: "text-sm text-gray-600" %>
-              <%= player_fields.file_field :player_image, id: "player_image_input", class: "form-control block w-full px-2 py-1 mt-1 border border-gray-300 rounded" %>
-
-              <!-- プレイヤー画像リセットリンク -->
-              <% if player_fields.object.id.present? %>
-                <%= link_to "画像を未設定にする", reset_player_image_mypages_path(player_id: player_fields.object.id), method: :delete, remote: true, class: "btn btn-danger mt-2 px-2 py-1 text-sm text-gray-600", data: { confirm: '本当にプレイヤー画像を未設定にしますか？' } %>
-              <% end %>              
-            </div>
-
-            <!-- 削除フラグを管理 -->
-            <div class="form-group mt-4">
-             <!-- 既存のplayerの削除ボタン -->
-           <% if player_fields.object.id.present? %>
-              <%= link_to "削除", "#", class: "btn btn-danger bg-red-500 text-white mt-4 px-3 py-1 rounded", onclick: "if(confirm('削除してしまうと今までの記録が全て消えてしまいます。削除してもよろしいでしょうか？')) { this.closest('div.player-card').querySelector('.destroy-flag').value = '1'; this.closest('form').submit(); } return false;" %>
-              <%= player_fields.hidden_field :_destroy, class: "destroy-flag" %>
-            <% else %>
-              <!-- 新規プレイヤーの削除ボタン -->
-              <button type="button" class="remove-new-player-btn bg-red-500 text-white mt-4 px-3 py-1 rounded">削除</button>
-            <% end %>
-            </div>
-
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
+    
 
 
     <div class="form-group mt-6">
